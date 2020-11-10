@@ -82,7 +82,7 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
   
   
   
-  // colisão com jogadores 
+  // player collision 
   if ((ball->y >= playerB->y && ball->y <= playerB->y + 100 && ball->x == playerB->x - 10) || (ball->y >= playerA->y && ball->y <= playerA->y + 100 && ball->x == playerA->x + 10))
   {
     ball->vel *= -1;
@@ -112,11 +112,12 @@ void doRender(SDL_Renderer *renderer, Player * playerA, Player * playerB, Ball *
   SDL_Rect rectA = { playerA->x, playerA->y, 10, 100 };
   SDL_Rect rectB = { playerB->x, playerB->y, 10, 100 };
   SDL_Rect rectball = { ball->x, ball->y, 10, 10 };
+  SDL_Rect net = { 320, 0 , 1, 640 };
   
   SDL_RenderFillRect(renderer, &rectA);
   SDL_RenderFillRect(renderer, &rectB);
   SDL_RenderFillRect(renderer, &rectball);
-  
+  SDL_RenderFillRect(renderer, &net);
   //We are done drawing, "present" or show to the screen what we've drawn
   SDL_RenderPresent(renderer);
 }
