@@ -11,7 +11,7 @@ typedef struct
 typedef struct
 {
   int x, y;
-  int vel;
+  int velx, vely;
 } Ball;
 
 
@@ -21,6 +21,7 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
 {
   SDL_Event event;
   int done = 0;
+  float playerCenter, diag;
 
   while(SDL_PollEvent(&event))
   {
@@ -73,21 +74,36 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
   }
 
   
-  ball->x += ball->vel;
+  ball->x += ball->velx;
+  ball->y += ball->vely;
   
 
   
   
-  // colisão com a parede
+  //colisão c/ a parede
+  if (ball->y >= 480 || ball->y <= 0) ball->vely *= -1; 
   
+  // possivel pontuação
+  // if (ball->x >= 640 || ball->x <= 0) ball->velx *= -1; 
   
-  
-  // player collision 
+  // colisão com o jogador
   if ((ball->y >= playerB->y && ball->y <= playerB->y + 100 && ball->x == playerB->x - 10) || (ball->y >= playerA->y && ball->y <= playerA->y + 100 && ball->x == playerA->x + 10))
   {
-    ball->vel *= -1;
+    if (ball->x > 320) 
+    {
+    playerCenter = playerB->y + 50;
+    diag = playerCenter - ball->y;
+    ball->vely += diag * - 0.1;
+    ball->velx *= -1;
+    } else 
+    {
+    playerCenter = playerA->y + 50;
+    diag = playerCenter - ball->y;
+    ball->vely += diag * - 0.1;
+    ball->velx *= -1;
+    }
   }
-  
+
 
   
   
@@ -109,8 +125,8 @@ void doRender(SDL_Renderer *renderer, Player * playerA, Player * playerB, Ball *
   //set the drawing color to white
   SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
   
-  SDL_Rect rectA = { playerA->x, playerA->y, 10, 100 };
-  SDL_Rect rectB = { playerB->x, playerB->y, 10, 100 };
+  SDL_Rect rectA = { playerA->x, playerA->y, 5, 70 };
+  SDL_Rect rectB = { playerB->x, playerB->y, 5, 70 };
   SDL_Rect rectball = { ball->x, ball->y, 10, 10 };
   SDL_Rect net = { 320, 0 , 1, 640 };
   
@@ -118,6 +134,7 @@ void doRender(SDL_Renderer *renderer, Player * playerA, Player * playerB, Ball *
   SDL_RenderFillRect(renderer, &rectB);
   SDL_RenderFillRect(renderer, &rectball);
   SDL_RenderFillRect(renderer, &net);
+  
   //We are done drawing, "present" or show to the screen what we've drawn
   SDL_RenderPresent(renderer);
 }
@@ -140,7 +157,8 @@ int main()
   Ball ball;
   ball.x = 220;
   ball.y = 120;
-  ball.vel = 2;
+  ball.velx = 2;
+  ball.vely = 0;
 
   
   //Create an application window with the following settings:
