@@ -75,6 +75,13 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
   {
     playerB->y += 5;
   }
+  if(state[SDL_SCANCODE_R])
+  {
+    ball->x = 220;
+    ball->y = 120;
+    ball->velx = 2;
+    ball->vely = 0;
+  }
 
   
   ball->x += ball->velx;
