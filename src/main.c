@@ -3,19 +3,23 @@
 #include <stdbool.h>
 
 
+// Estruturas que serão usadas no jogo
+
 typedef struct
 {
+  // posição dos jogadores
   int x, y;
 } Player;
 
 typedef struct
 {
+  // posição da bola 
   int x, y;
+  // atributo de velocidade horizontal e vertical
   int velx, vely;
 } Ball;
 
-
-
+// Função que processa os eventos do jogo 
 
 int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * ball)
 {
@@ -48,7 +52,6 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
       }
       break;
       case SDL_QUIT:
-        //quit out of the game
         done = 1;
         break;
     }
@@ -83,7 +86,7 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
   //colisão c/ a parede
   if (ball->y >= 480 || ball->y <= 0) ball->vely *= -1; 
   
-  // possivel pontuação
+  // detecção de pontuação
   // if (ball->x >= 640 || ball->x <= 0) ball->velx *= -1; 
   
   // colisão com o jogador
@@ -104,27 +107,23 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
     }
   }
 
-
-  
-  
-  
-  
-  
-
   return done;
 }
 
+// Função que rederiza na tela os elementos do jogo
+
 void doRender(SDL_Renderer *renderer, Player * playerA, Player * playerB, Ball * ball)
 {
-  //set the drawing color to blue
+  //Escolhe a cor azul para renderizar 
   SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
   
-  //Clear the screen (to blue)
+  //Deixa a tela azul
   SDL_RenderClear(renderer);
   
-  //set the drawing color to white
+  //Escolhe a cor branca para novos desenhos 
   SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
   
+  // Desenho e renderiza os elementos do jogo na tela 
   SDL_Rect rectA = { playerA->x, playerA->y, 5, 70 };
   SDL_Rect rectB = { playerB->x, playerB->y, 5, 70 };
   SDL_Rect rectball = { ball->x, ball->y, 10, 10 };
@@ -135,17 +134,18 @@ void doRender(SDL_Renderer *renderer, Player * playerA, Player * playerB, Ball *
   SDL_RenderFillRect(renderer, &rectball);
   SDL_RenderFillRect(renderer, &net);
   
-  //We are done drawing, "present" or show to the screen what we've drawn
+  //Apresenta aquilo feito na tela 
   SDL_RenderPresent(renderer);
 }
 
 int main()
 {
-  SDL_Window *window;                    // Declare a window
-  SDL_Renderer *renderer;                // Declare a renderer
+  SDL_Window *window;                    // Declaração de janela 
+  SDL_Renderer *renderer;                // Declaração de renderização
   
-  SDL_Init(SDL_INIT_VIDEO);              // Initialize SDL2
+  SDL_Init(SDL_INIT_VIDEO);              // Inicializa o SDL2 
   
+  // Inicializando as peça do jogo com seus atributos
   Player playerA;
   playerA.x = 0;
   playerA.y = 0;
@@ -161,12 +161,12 @@ int main()
   ball.vely = 0;
 
   
-  //Create an application window with the following settings:
-  window = SDL_CreateWindow("PongC",                           // window title
-                            SDL_WINDOWPOS_UNDEFINED,           // initial x position
-                            SDL_WINDOWPOS_UNDEFINED,           // initial y position
-                            640,                               // width, in pixels
-                            480,                               // height, in pixels
+  // Criar a janela da aplicação com as seguintes configs: 
+  window = SDL_CreateWindow("PongC",                           // título da janela
+                            SDL_WINDOWPOS_UNDEFINED,           // posição inicial x 
+                            SDL_WINDOWPOS_UNDEFINED,           // posição inicial y
+                            640,                               // largura em pixels
+                            480,                               // altura em pixels
                             0                                  // flags
                             );
   
@@ -177,28 +177,28 @@ int main()
                             );
 
 
-  // The window is open: enter program loop (see SDL_PollEvent)
+  // Seta a variável que continua o loop
   int done = 0;
   
-  //Event loop
+  //Loop principal do jogo
   while(!done)
   {
-    //Check for events
+    //Observar os eventos 
     done = processEvents(window, &playerA, &playerB, &ball);
     
-    //Render display
+    //Renderiza no display 
     doRender(renderer, &playerA, &playerB, &ball);
     
-    //don't burn up the CPU
+    //Controla o tempo do interno do jogo
     SDL_Delay(10);
   }
   
   
-  // Close and destroy the window
+  // Limpeza da memoria pós-jogo
   SDL_DestroyWindow(window);
   SDL_DestroyRenderer(renderer);
   
-  // Clean up
+  // Última etapa de limpeza
   SDL_Quit();
   return 0;
 }
