@@ -8,7 +8,7 @@
 typedef struct
 {
   // posição dos jogadores
-  int x, y;
+  int x, y, score;
 } Player;
 
 typedef struct
@@ -75,6 +75,7 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
   {
     playerB->y += 5;
   }
+  // Reset da Bola 
   if(state[SDL_SCANCODE_R])
   {
     ball->x = 220;
@@ -94,7 +95,26 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
   if (ball->y >= 480 || ball->y <= 0) ball->vely *= -1; 
   
   // detecção de pontuação
-  // if (ball->x >= 640 || ball->x <= 0) ball->velx *= -1; 
+  if (ball->x >= 640 || ball->x <= 0) 
+  {
+    if(ball->x >= 640)
+    {
+      playerA->score += 1;
+      ball->x = 220;
+      ball->y = 120;
+      ball->velx = 2;
+      ball->vely = 0;
+      printf("Jogador A: %d x Jogador B: %d\n", playerA->score, playerB->score);
+    } else if (ball->x <= 0) 
+    {
+      playerB->score += 1;
+      ball->x = 220;
+      ball->y = 120;
+      ball->velx = -2;
+      ball->vely = 0;
+      printf("Jogador A: %d x Jogador B: %d\n", playerA->score, playerB->score);
+    }
+  }; 
   
   // colisão com o jogador
   if ((ball->y >= playerB->y && ball->y <= playerB->y + 100 && ball->x == playerB->x - 10) || (ball->y >= playerA->y && ball->y <= playerA->y + 100 && ball->x == playerA->x + 10))
@@ -156,10 +176,12 @@ int main()
   Player playerA;
   playerA.x = 0;
   playerA.y = 0;
+  playerA.score = 0;
 
   Player playerB;
   playerB.x = 630;
   playerB.y = 0;
+  playerB.score = 0;
 
   Ball ball;
   ball.x = 220;
