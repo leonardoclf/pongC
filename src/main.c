@@ -24,7 +24,7 @@ typedef struct
 int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * ball)
 {
   SDL_Event event;
-  int done = 0;
+  bool done = false;
   float playerCenter, diag;
 
   while(SDL_PollEvent(&event))
@@ -84,13 +84,11 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
     ball->vely = 0;
   }
 
-  
+  // bloco de lógica da movimentação da bola
   ball->x += ball->velx;
   ball->y += ball->vely;
   
 
-  
-  
   //colisão c/ a parede
   if (ball->y >= 480 || ball->y <= 0) ball->vely *= -1; 
   
@@ -207,7 +205,7 @@ int main()
 
 
   // Seta a variável que continua o loop
-  int done = 0;
+  bool done = false;
   
   //Loop principal do jogo
   while(!done)
