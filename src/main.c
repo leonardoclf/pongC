@@ -104,7 +104,6 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
       ball->y = 120;
       ball->velx = 2;
       ball->vely = 0;
-      printf("Jogador A: %d x Jogador B: %d\n", playerA->score, playerB->score);
     } 
     else if (ball->x <= 0) 
     {
@@ -112,8 +111,7 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
       ball->x = 220;
       ball->y = 120;
       ball->velx = -2;
-      ball->vely = 0;
-      printf("Jogador A: %d x Jogador B: %d\n", playerA->score, playerB->score);
+      ball->vely = 0;      
     }
   }; 
   
@@ -179,8 +177,8 @@ void doRender(SDL_Renderer *renderer, Player * playerA, Player * playerB, Ball *
   SDL_Rect rectB = { playerB->x, playerB->y, 5, 70 };
   SDL_Rect rectball = { ball->x, ball->y, 10, 10 };
   SDL_Rect net = { 320, 0 , 1, 640 };
-  SDL_Rect scoreA = { 160, 100, texW, texH };
-  SDL_Rect scoreB = { 420, 100, texW, texH };
+  SDL_Rect scoreA = { 180, 100, texW, texH };
+  SDL_Rect scoreB = { 400, 100, texW, texH };
   
   SDL_RenderFillRect(renderer, &rectA);
   SDL_RenderFillRect(renderer, &rectB);
@@ -240,7 +238,7 @@ int main()
 
 
   // Carrega a fonte
-  TTF_Font * font = TTF_OpenFont("Roboto.ttf", 96);
+  TTF_Font * font = TTF_OpenFont("Roboto.ttf", 120);
 
   // Seta a variável que continua o loop
   bool done = false;
