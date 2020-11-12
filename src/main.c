@@ -1,6 +1,8 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 
 // Estruturas que serão usadas no jogo
@@ -139,7 +141,7 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
 
 // Função que rederiza na tela os elementos do jogo
 
-void doRender(SDL_Renderer *renderer, Player * playerA, Player * playerB, Ball * ball)
+void doRender(SDL_Renderer *renderer, Player * playerA, Player * playerB, Ball * ball, TTF_Font * font)
 {
   //Escolhe a cor azul para renderizar 
   SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
@@ -149,20 +151,50 @@ void doRender(SDL_Renderer *renderer, Player * playerA, Player * playerB, Ball *
   
   //Escolhe a cor branca para novos desenhos 
   SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+
+  // Processamento do Placar - texto
+  // conversão do placar para str
+  char scorePlayerAStr[10];
+  sprintf(scorePlayerAStr, "%i", playerA->score);
+  char scorePlayerBStr[10];
+  sprintf(scorePlayerBStr, "%i", playerB->score);
+
+  // seleção da cor e var comum de texto
+  SDL_Color color = { 255, 255, 255 };
+  int texW = 0;
+  int texH = 0;
+
+  // criação do text do jogador A 
+  SDL_Surface * surfaceA = TTF_RenderText_Solid(font, scorePlayerAStr, color);
+  SDL_Texture * textureA = SDL_CreateTextureFromSurface(renderer, surfaceA);
+  SDL_QueryTexture(textureA, NULL, NULL, &texW, &texH);
+
+  // criação do text do jogador B
+  SDL_Surface * surfaceB = TTF_RenderText_Solid(font, scorePlayerBStr, color);
+  SDL_Texture * textureB = SDL_CreateTextureFromSurface(renderer, surfaceB);
+  SDL_QueryTexture(textureB, NULL, NULL, &texW, &texH);
   
   // Desenho e renderiza os elementos do jogo na tela 
   SDL_Rect rectA = { playerA->x, playerA->y, 5, 70 };
   SDL_Rect rectB = { playerB->x, playerB->y, 5, 70 };
   SDL_Rect rectball = { ball->x, ball->y, 10, 10 };
   SDL_Rect net = { 320, 0 , 1, 640 };
+  SDL_Rect scoreA = { 160, 100, texW, texH };
+  SDL_Rect scoreB = { 420, 100, texW, texH };
   
   SDL_RenderFillRect(renderer, &rectA);
   SDL_RenderFillRect(renderer, &rectB);
   SDL_RenderFillRect(renderer, &rectball);
   SDL_RenderFillRect(renderer, &net);
+  SDL_RenderCopy(renderer, textureA, NULL, &scoreA);
+  SDL_RenderCopy(renderer, textureB, NULL, &scoreB);
   
   //Apresenta aquilo feito na tela 
   SDL_RenderPresent(renderer);
+  SDL_DestroyTexture(textureA);
+  SDL_FreeSurface(surfaceA);
+  SDL_DestroyTexture(textureB);
+  SDL_FreeSurface(surfaceB);
 }
 
 int main()
@@ -171,6 +203,7 @@ int main()
   SDL_Renderer *renderer;                // Declaração de renderização
   
   SDL_Init(SDL_INIT_VIDEO);              // Inicializa o SDL2 
+  TTF_Init();
   
   // Inicializando as peça do jogo com seus atributos
   Player playerA;
@@ -206,6 +239,9 @@ int main()
                             );
 
 
+  // Carrega a fonte
+  TTF_Font * font = TTF_OpenFont("Roboto.ttf", 96);
+
   // Seta a variável que continua o loop
   bool done = false;
   
@@ -216,7 +252,7 @@ int main()
     done = processEvents(window, &playerA, &playerB, &ball);
     
     //Renderiza no display 
-    doRender(renderer, &playerA, &playerB, &ball);
+    doRender(renderer, &playerA, &playerB, &ball, font);
     
     //Controla o tempo do interno do jogo
     SDL_Delay(10);
@@ -226,8 +262,10 @@ int main()
   // Limpeza da memoria pós-jogo
   SDL_DestroyWindow(window);
   SDL_DestroyRenderer(renderer);
+  TTF_CloseFont(font);
   
   // Última etapa de limpeza
+  TTF_Quit();
   SDL_Quit();
   return 0;
 }
