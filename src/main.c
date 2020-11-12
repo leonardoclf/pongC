@@ -21,6 +21,15 @@ typedef struct
   int velx, vely;
 } Ball;
 
+typedef struct
+{
+  int texW;
+  int texH;
+  TTF_Font * font;
+  SDL_Color color;
+} Texto;
+
+
 // Função que processa os eventos do jogo 
 
 int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * ball)
@@ -145,7 +154,7 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
 
 // Função que rederiza na tela os elementos do jogo
 
-void doRender(SDL_Renderer *renderer, Player * playerA, Player * playerB, Ball * ball, TTF_Font * font, SDL_Color color, int texW, int texH)
+void doRender(SDL_Renderer *renderer, Player * playerA, Player * playerB, Ball * ball, Texto * textoVic)
 {
   //Escolhe a cor azul para renderizar 
   SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
@@ -165,22 +174,24 @@ void doRender(SDL_Renderer *renderer, Player * playerA, Player * playerB, Ball *
   
   // Processamento do Placar - texto
   // criação do text do jogador A 
-  SDL_Surface * surfaceA = TTF_RenderText_Solid(font, scorePlayerAStr, color);
+  SDL_Surface * surfaceA = TTF_RenderText_Solid(textoVic->font, scorePlayerAStr, textoVic->color);
   SDL_Texture * textureA = SDL_CreateTextureFromSurface(renderer, surfaceA);
-  SDL_QueryTexture(textureA, NULL, NULL, &texW, &texH);
+  SDL_QueryTexture(textureA, NULL, NULL, &textoVic->texW, &textoVic->texH);
 
   // criação do text do jogador B
-  SDL_Surface * surfaceB = TTF_RenderText_Solid(font, scorePlayerBStr, color);
+  SDL_Surface * surfaceB = TTF_RenderText_Solid(textoVic->font, scorePlayerBStr, textoVic->color);
   SDL_Texture * textureB = SDL_CreateTextureFromSurface(renderer, surfaceB);
-  SDL_QueryTexture(textureB, NULL, NULL, &texW, &texH);
+  SDL_QueryTexture(textureB, NULL, NULL, &textoVic->texW, &textoVic->texH);
   
+
+
   // Desenho e renderiza os elementos do jogo na tela 
   SDL_Rect rectA = { playerA->x, playerA->y, 5, 70 };
-  SDL_Rect rectB = { playerB->x, playerB->y, 5, 70 };
+  SDL_Rect rectB = { playerB->x, playerB->y, 5, 70 }; 
   SDL_Rect rectball = { ball->x, ball->y, 10, 10 };
   SDL_Rect net = { 320, 0 , 1, 640 };
-  SDL_Rect scoreA = { 180, 100, texW, texH };
-  SDL_Rect scoreB = { 400, 100, texW, texH };
+  SDL_Rect scoreA = { 180, 100, textoVic->texW, textoVic->texH };
+  SDL_Rect scoreB = { 400, 100, textoVic->texW, textoVic->texH };
   
   SDL_RenderFillRect(renderer, &rectA);
   SDL_RenderFillRect(renderer, &rectB);
@@ -190,10 +201,6 @@ void doRender(SDL_Renderer *renderer, Player * playerA, Player * playerB, Ball *
   SDL_RenderCopy(renderer, textureB, NULL, &scoreB);
   
   //Apresenta aquilo feito na tela 
-  SDL_DestroyTexture(textureA);
-  SDL_FreeSurface(surfaceA);
-  SDL_DestroyTexture(textureB);
-  SDL_FreeSurface(surfaceB);
   SDL_RenderPresent(renderer);
 }
 
@@ -222,6 +229,16 @@ int main()
   ball.velx = 2;
   ball.vely = 0;
 
+  Texto textVictory;
+  textVictory.texW = 0;
+  textVictory.texH = 0;
+  textVictory.color.r = 255;
+  textVictory.color.b = 255;
+  textVictory.color.g = 255;
+  textVictory.color.a = 255;
+  textVictory.font = TTF_OpenFont("Roboto.ttf", 120);
+
+
   
   // Criar a janela da aplicação com as seguintes configs: 
   window = SDL_CreateWindow("PongC",                           // título da janela
@@ -239,13 +256,7 @@ int main()
                             );
 
 
-  // Carrega a fonte
-  TTF_Font * font = TTF_OpenFont("Roboto.ttf", 120);
   
-  // seleção da cor e var comum de texto
-  SDL_Color color = { 255, 255, 255 };
-  int texW = 0;
-  int texH = 0;
 
   // Seta a variável que continua o loop
   bool done = false;
@@ -257,7 +268,7 @@ int main()
     done = processEvents(window, &playerA, &playerB, &ball);
     
     //Renderiza no display 
-    doRender(renderer, &playerA, &playerB, &ball, font, color, texW, texH);
+    doRender(renderer, &playerA, &playerB, &ball, &textVictory);
     
     //Controla o tempo do interno do jogo
     SDL_Delay(10);
@@ -267,7 +278,7 @@ int main()
   // Limpeza da memoria pós-jogo
   SDL_DestroyWindow(window);
   SDL_DestroyRenderer(renderer);
-  TTF_CloseFont(font);
+  TTF_CloseFont(textVictory.font);
   
   // Última etapa de limpeza
   TTF_Quit();
