@@ -103,7 +103,8 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
       ball->velx = 2;
       ball->vely = 0;
       printf("Jogador A: %d x Jogador B: %d\n", playerA->score, playerB->score);
-    } else if (ball->x <= 0) 
+    } 
+    else if (ball->x <= 0) 
     {
       playerB->score += 1;
       ball->x = 220;
@@ -119,16 +120,17 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
   {
     if (ball->x > 320) 
     {
-    playerCenter = playerB->y + 50;
-    diag = playerCenter - ball->y;
-    ball->vely += diag * - 0.1;
-    ball->velx *= -1;
-    } else 
+      playerCenter = playerB->y + 50;
+      diag = playerCenter - ball->y;
+      ball->vely += diag * - 0.1;
+      ball->velx *= -1;
+    } 
+    else 
     {
-    playerCenter = playerA->y + 50;
-    diag = playerCenter - ball->y;
-    ball->vely += diag * - 0.1;
-    ball->velx *= -1;
+      playerCenter = playerA->y + 50;
+      diag = playerCenter - ball->y;
+      ball->vely += diag * - 0.1;
+      ball->velx *= -1;
     }
   }
 
