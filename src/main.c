@@ -125,18 +125,26 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
   }; 
   
   // colisão com o jogador
-  if ((ball->y >= playerB->y && ball->y <= playerB->y + 100 && ball->x == playerB->x - 10) || (ball->y >= playerA->y && ball->y <= playerA->y + 100 && ball->x == playerA->x + 10))
+  if ((ball->y >= playerB->y && ball->y <= playerB->y + 100 && ball->x == playerB->x - 10) || (ball->y >= playerA->y && ball->y <= playerA->y + 100 && ball->x == playerA->x + 5))
   {
     if (ball->x > 320) 
     {
-      playerCenter = playerB->y + 50;
+      printf("Ax: %d\n", playerA->x);
+      printf("Ay: %d\n", playerA->y);
+      printf("Ballx: %d\n", ball->x);
+      printf("Bally: %d\n", ball->y);
+      playerCenter = playerB->y + 35;
       diag = playerCenter - ball->y;
       ball->vely += diag * - 0.1;
       ball->velx *= -1;
     } 
     else 
     {
-      playerCenter = playerA->y + 50;
+      printf("Bx: %d\n", playerB->x);
+      printf("By: %d\n", playerB->y);
+      printf("Ballx: %d\n", ball->x);
+      printf("Bally: %d\n", ball->y);
+      playerCenter = playerA->y + 35;
       diag = playerCenter - ball->y;
       ball->vely += diag * - 0.1;
       ball->velx *= -1;
@@ -170,6 +178,8 @@ void doRender(SDL_Renderer *renderer, Player * playerA, Player * playerB, Ball *
   char scorePlayerBStr[10];
   sprintf(scorePlayerAStr, "%i", playerA->score);
   sprintf(scorePlayerBStr, "%i", playerB->score);
+  // sprintf(scorePlayerAStr, "%i", ball->x);
+  // sprintf(scorePlayerBStr, "%i", ball->y);
 
   
   // Processamento do Placar - texto
@@ -214,7 +224,7 @@ int main()
   
   // Inicializando as peça do jogo com seus atributos
   Player playerA;
-  playerA.x = 0;
+  playerA.x = 5;
   playerA.y = 0;
   playerA.score = 0;
 
