@@ -39,7 +39,7 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
         {
           SDL_DestroyWindow(window);
           window = NULL;
-          done = 1;
+          done = true;
         }
       }
       break;
@@ -48,13 +48,13 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
         switch(event.key.keysym.sym)
         {
           case SDLK_ESCAPE:
-          done = 1;
+          done = true;
           break;
         }
       }
       break;
       case SDL_QUIT:
-        done = 1;
+        done = true;
         break;
     }
   }
@@ -134,12 +134,18 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
     }
   }
 
+  // fim de jogo
+  if (playerA->score >= 5 || playerB->score >= 5 )
+  {
+    done = true;
+  }
+
   return done;
 }
 
 // Função que rederiza na tela os elementos do jogo
 
-void doRender(SDL_Renderer *renderer, Player * playerA, Player * playerB, Ball * ball, TTF_Font * font)
+void doRender(SDL_Renderer *renderer, Player * playerA, Player * playerB, Ball * ball, TTF_Font * font, SDL_Color color, int texW, int texH)
 {
   //Escolhe a cor azul para renderizar 
   SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
@@ -150,18 +156,14 @@ void doRender(SDL_Renderer *renderer, Player * playerA, Player * playerB, Ball *
   //Escolhe a cor branca para novos desenhos 
   SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
-  // Processamento do Placar - texto
   // conversão do placar para str
   char scorePlayerAStr[10];
-  sprintf(scorePlayerAStr, "%i", playerA->score);
   char scorePlayerBStr[10];
+  sprintf(scorePlayerAStr, "%i", playerA->score);
   sprintf(scorePlayerBStr, "%i", playerB->score);
 
-  // seleção da cor e var comum de texto
-  SDL_Color color = { 255, 255, 255 };
-  int texW = 0;
-  int texH = 0;
-
+  
+  // Processamento do Placar - texto
   // criação do text do jogador A 
   SDL_Surface * surfaceA = TTF_RenderText_Solid(font, scorePlayerAStr, color);
   SDL_Texture * textureA = SDL_CreateTextureFromSurface(renderer, surfaceA);
@@ -188,11 +190,11 @@ void doRender(SDL_Renderer *renderer, Player * playerA, Player * playerB, Ball *
   SDL_RenderCopy(renderer, textureB, NULL, &scoreB);
   
   //Apresenta aquilo feito na tela 
-  SDL_RenderPresent(renderer);
   SDL_DestroyTexture(textureA);
   SDL_FreeSurface(surfaceA);
   SDL_DestroyTexture(textureB);
   SDL_FreeSurface(surfaceB);
+  SDL_RenderPresent(renderer);
 }
 
 int main()
@@ -239,6 +241,11 @@ int main()
 
   // Carrega a fonte
   TTF_Font * font = TTF_OpenFont("Roboto.ttf", 120);
+  
+  // seleção da cor e var comum de texto
+  SDL_Color color = { 255, 255, 255 };
+  int texW = 0;
+  int texH = 0;
 
   // Seta a variável que continua o loop
   bool done = false;
@@ -250,7 +257,7 @@ int main()
     done = processEvents(window, &playerA, &playerB, &ball);
     
     //Renderiza no display 
-    doRender(renderer, &playerA, &playerB, &ball, font);
+    doRender(renderer, &playerA, &playerB, &ball, font, color, texW, texH);
     
     //Controla o tempo do interno do jogo
     SDL_Delay(10);
