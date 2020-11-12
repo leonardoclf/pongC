@@ -69,20 +69,20 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
   }
   
   const Uint8 *state = SDL_GetKeyboardState(NULL);
-  if(state[SDL_SCANCODE_W])
+  if(state[SDL_SCANCODE_W] && playerA->y > 5)
   {
     playerA->y -= 5;
   }
-  if(state[SDL_SCANCODE_S])
+  if(state[SDL_SCANCODE_S] && playerA->y < 405)
   {
     playerA->y += 5;
   }
   
-  if(state[SDL_SCANCODE_UP])
+  if(state[SDL_SCANCODE_UP] && playerB->y > 5)
   {
     playerB->y -= 5;
   }
-  if(state[SDL_SCANCODE_DOWN])
+  if(state[SDL_SCANCODE_DOWN] && playerB->y < 405)
   {
     playerB->y += 5;
   }
@@ -200,8 +200,8 @@ void doRender(SDL_Renderer *renderer, Player * playerA, Player * playerB, Ball *
   SDL_Rect rectB = { playerB->x, playerB->y, 5, 70 }; 
   SDL_Rect rectball = { ball->x, ball->y, 10, 10 };
   SDL_Rect net = { 320, 0 , 1, 640 };
-  SDL_Rect scoreA = { 180, 100, textoVic->texW, textoVic->texH };
-  SDL_Rect scoreB = { 400, 100, textoVic->texW, textoVic->texH };
+  SDL_Rect scoreA = { 180, 120, textoVic->texW, textoVic->texH };
+  SDL_Rect scoreB = { 390, 120, textoVic->texW, textoVic->texH };
   
   SDL_RenderFillRect(renderer, &rectA);
   SDL_RenderFillRect(renderer, &rectB);
@@ -225,12 +225,12 @@ int main()
   // Inicializando as peça do jogo com seus atributos
   Player playerA;
   playerA.x = 5;
-  playerA.y = 0;
+  playerA.y = 190;
   playerA.score = 0;
 
   Player playerB;
   playerB.x = 630;
-  playerB.y = 0;
+  playerB.y = 190;
   playerB.score = 0;
 
   Ball ball;
@@ -247,7 +247,6 @@ int main()
   textVictory.color.g = 255;
   textVictory.color.a = 255;
   textVictory.font = TTF_OpenFont("Roboto.ttf", 120);
-
 
   
   // Criar a janela da aplicação com as seguintes configs: 
