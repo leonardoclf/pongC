@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -30,10 +31,13 @@ typedef struct
 } Texto;
 
 
+
+
 // Função que processa os eventos do jogo 
 
-int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * ball)
+int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * ball, Mix_Chunk * hitFx)
 {
+
   SDL_Event event;
   bool done = false;
   float playerCenter, diag;
@@ -101,7 +105,11 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
   
 
   //colisão c/ a parede
-  if (ball->y >= 480 || ball->y <= 0) ball->vely *= -1; 
+  if (ball->y >= 480 || ball->y <= 0)
+  {
+    Mix_PlayChannel(-1, hitFx, 0);
+    ball->vely *= -1; 
+  } 
   
   // detecção de pontuação
   if (ball->x >= 640 || ball->x <= 0) 
@@ -129,6 +137,7 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
   {
     if (ball->x > 320) 
     {
+      Mix_PlayChannel(-1, hitFx, 0);
       printf("Ax: %d\n", playerA->x);
       printf("Ay: %d\n", playerA->y);
       printf("Ballx: %d\n", ball->x);
@@ -140,6 +149,7 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
     } 
     else 
     {
+      Mix_PlayChannel(-1, hitFx, 0);
       printf("Bx: %d\n", playerB->x);
       printf("By: %d\n", playerB->y);
       printf("Ballx: %d\n", ball->x);
@@ -219,7 +229,7 @@ int main()
   SDL_Window *window;                    // Declaração de janela 
   SDL_Renderer *renderer;                // Declaração de renderização
   
-  SDL_Init(SDL_INIT_VIDEO);              // Inicializa o SDL2 
+  SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);              // Inicializa o SDL2 
   TTF_Init();
   
   // Inicializando as peça do jogo com seus atributos
@@ -248,7 +258,13 @@ int main()
   textVictory.color.a = 255;
   textVictory.font = TTF_OpenFont("Roboto.ttf", 120);
 
+  // Abre canal de audio
+  Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+  // Carrega o efeito sonoro
+  Mix_Chunk * hitFx = Mix_LoadWAV("Hit.wav");
   
+  
+
   // Criar a janela da aplicação com as seguintes configs: 
   window = SDL_CreateWindow("PongC",                           // título da janela
                             SDL_WINDOWPOS_UNDEFINED,           // posição inicial x 
@@ -269,12 +285,16 @@ int main()
 
   // Seta a variável que continua o loop
   bool done = false;
+
+  //Esconde o mouse
+  SDL_ShowCursor(0);
+  
   
   //Loop principal do jogo
   while(!done)
   {
     //Observar os eventos 
-    done = processEvents(window, &playerA, &playerB, &ball);
+    done = processEvents(window, &playerA, &playerB, &ball, hitFx);
     
     //Renderiza no display 
     doRender(renderer, &playerA, &playerB, &ball, &textVictory);
@@ -285,12 +305,14 @@ int main()
   
   
   // Limpeza da memoria pós-jogo
+  
   SDL_DestroyWindow(window);
   SDL_DestroyRenderer(renderer);
   TTF_CloseFont(textVictory.font);
   
   // Última etapa de limpeza
   TTF_Quit();
+  Mix_CloseAudio();
   SDL_Quit();
   return 0;
 }
