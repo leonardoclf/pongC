@@ -36,7 +36,6 @@ int stage = 1;
 
 
 // Função que processa os eventos do jogo 
-
 int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * ball, Mix_Chunk * hitFx)
 {
 
@@ -180,7 +179,7 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
   return stage;
 }
 
-
+// Função que renderiza o menu
 void doRenderMenu(SDL_Renderer *renderer, Texto * textoVic)
 {
   
@@ -217,9 +216,7 @@ void doRenderMenu(SDL_Renderer *renderer, Texto * textoVic)
   SDL_RenderPresent(renderer);
 }
 
-
-
-// Função que rederiza na tela os elementos do jogo
+// Função que rederiza o jogo
 void doRenderGame(SDL_Renderer *renderer, Player * playerA, Player * playerB, Ball * ball, Texto * textoVic)
 {
   //Escolhe a cor azul para renderizar 
@@ -321,8 +318,6 @@ int main()
   // Carrega o efeito sonoro
   Mix_Chunk * hitFx = Mix_LoadWAV("Hit.wav");
   
-  
-
   // Criar a janela da aplicação com as seguintes configs: 
   window = SDL_CreateWindow("PongC",                           // título da janela
                             SDL_WINDOWPOS_UNDEFINED,           // posição inicial x 
@@ -338,19 +333,8 @@ int main()
                             SDL_RENDERER_ACCELERATED
                             );
 
-
-  
-
-  // Set a variável que continua o loop
-  // int stage = 1;
-  
-
-  // Set a variável de controle do menu e jogo
-  
-
   //Esconde o mouse
   SDL_ShowCursor(0);
-
 
   //Loop principal do jogo
   while(stage > 0)
@@ -368,10 +352,7 @@ int main()
       //Renderiza no display os eventos do jogo
       doRenderGame(renderer, &playerA, &playerB, &ball, &textVictory);
     }
-    
-    
-    
-    
+
     //Controla o tempo do interno do jogo
     SDL_Delay(10);
   }
