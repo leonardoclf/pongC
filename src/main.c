@@ -305,10 +305,10 @@ int main()
   
   
   // Limpeza da memoria pós-jogo
-  
   SDL_DestroyWindow(window);
   SDL_DestroyRenderer(renderer);
   TTF_CloseFont(textVictory.font);
+  Mix_FreeChunk(hitFx);
   
   // Última etapa de limpeza
   TTF_Quit();
