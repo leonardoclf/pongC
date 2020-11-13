@@ -8,6 +8,7 @@
 
 // Estruturas que serão usadas no jogo
 
+
 typedef struct
 {
   // posição dos jogadores
@@ -30,7 +31,8 @@ typedef struct
   SDL_Color color;
 } Texto;
 
-
+// Var global que cuida do estado do jogo
+int stage = 1;
 
 
 // Função que processa os eventos do jogo 
@@ -39,7 +41,7 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
 {
 
   SDL_Event event;
-  bool done = false;
+
   float playerCenter, diag;
 
   while(SDL_PollEvent(&event))
@@ -52,7 +54,7 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
         {
           SDL_DestroyWindow(window);
           window = NULL;
-          done = true;
+          stage = -1;
         }
       }
       break;
@@ -61,18 +63,22 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
         switch(event.key.keysym.sym)
         {
           case SDLK_ESCAPE:
-          done = true;
+          stage = -1;
           break;
         }
       }
       break;
       case SDL_QUIT:
-        done = true;
+        stage = -1;
         break;
     }
   }
   
   const Uint8 *state = SDL_GetKeyboardState(NULL);
+  if(state[SDL_SCANCODE_SPACE])
+  {
+    stage = 2;
+  }
   if(state[SDL_SCANCODE_W] && playerA->y > 5)
   {
     playerA->y -= 5;
@@ -99,9 +105,13 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
     ball->vely = 0;
   }
 
-  // bloco de lógica da movimentação da bola
-  ball->x += ball->velx;
-  ball->y += ball->vely;
+  // bloco de lógica que começa partida
+  if (stage == 2)
+  {
+    ball->x += ball->velx;
+    ball->y += ball->vely;
+  }
+  
   
 
   //colisão c/ a parede
@@ -164,15 +174,53 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
   // fim de jogo
   if (playerA->score >= 5 || playerB->score >= 5 )
   {
-    done = true;
+    stage = -1;
   }
 
-  return done;
+  return stage;
 }
 
-// Função que rederiza na tela os elementos do jogo
 
-void doRender(SDL_Renderer *renderer, Player * playerA, Player * playerB, Ball * ball, Texto * textoVic)
+void doRenderMenu(SDL_Renderer *renderer, Texto * textoVic)
+{
+  
+  //Escolhe a cor azul para renderizar 
+  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+  
+  //Deixa a tela azul
+  SDL_RenderClear(renderer);
+  
+  //Escolhe a cor branca para novos desenhos 
+  SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+
+  SDL_Surface * msgA = TTF_RenderText_Solid(textoVic->font, "PONG C", textoVic->color);
+  SDL_Texture * msgTextA = SDL_CreateTextureFromSurface(renderer, msgA);
+  SDL_QueryTexture(msgTextA, NULL, NULL, &textoVic->texW, &textoVic->texH);
+
+  SDL_Surface * msgB = TTF_RenderText_Solid(textoVic->font, "ESPACO - Para comecar", textoVic->color);
+  SDL_Texture * msgTextB = SDL_CreateTextureFromSurface(renderer, msgB);
+  SDL_QueryTexture(msgTextB, NULL, NULL, &textoVic->texW, &textoVic->texH);
+
+  SDL_Surface * msgC = TTF_RenderText_Solid(textoVic->font, "ESC - Para finalizar jogo", textoVic->color);
+  SDL_Texture * msgTextC = SDL_CreateTextureFromSurface(renderer, msgC);
+  SDL_QueryTexture(msgTextC, NULL, NULL, &textoVic->texW, &textoVic->texH);
+
+  
+  SDL_Rect bemvindo = { 90, 40, textoVic->texW, textoVic->texH };
+  SDL_Rect instrucaoA = { 90, 160, textoVic->texW, textoVic->texH };
+  SDL_Rect instrucaoB = { 90, 200, textoVic->texW, textoVic->texH };
+  
+
+  SDL_RenderCopy(renderer, msgTextA, NULL, &bemvindo);
+  SDL_RenderCopy(renderer, msgTextB, NULL, &instrucaoA);
+  SDL_RenderCopy(renderer, msgTextC, NULL, &instrucaoB);
+  SDL_RenderPresent(renderer);
+}
+
+
+
+// Função que rederiza na tela os elementos do jogo
+void doRenderGame(SDL_Renderer *renderer, Player * playerA, Player * playerB, Ball * ball, Texto * textoVic)
 {
   //Escolhe a cor azul para renderizar 
   SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
@@ -249,6 +297,15 @@ int main()
   ball.velx = 2;
   ball.vely = 0;
 
+  Texto textMenu;
+  textMenu.texW = 0;
+  textMenu.texH = 0;
+  textMenu.color.r = 255;
+  textMenu.color.b = 255;
+  textMenu.color.g = 255;
+  textMenu.color.a = 255;
+  textMenu.font = TTF_OpenFont("Roboto.ttf", 38);
+
   Texto textVictory;
   textVictory.texW = 0;
   textVictory.texH = 0;
@@ -260,6 +317,7 @@ int main()
 
   // Abre canal de audio
   Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+  
   // Carrega o efeito sonoro
   Mix_Chunk * hitFx = Mix_LoadWAV("Hit.wav");
   
@@ -283,21 +341,36 @@ int main()
 
   
 
-  // Seta a variável que continua o loop
-  bool done = false;
+  // Set a variável que continua o loop
+  // int stage = 1;
+  
+
+  // Set a variável de controle do menu e jogo
+  
 
   //Esconde o mouse
   SDL_ShowCursor(0);
-  
-  
+
+
   //Loop principal do jogo
-  while(!done)
+  while(stage > 0)
   {
-    //Observar os eventos 
-    done = processEvents(window, &playerA, &playerB, &ball, hitFx);
+    //Observar os eventos do jogo 
+    stage = processEvents(window, &playerA, &playerB, &ball, hitFx);
     
-    //Renderiza no display 
-    doRender(renderer, &playerA, &playerB, &ball, &textVictory);
+    if(stage == 1)
+    {
+      // Renderiza o texto do menu
+      doRenderMenu(renderer, &textMenu);
+    }
+    else
+    {
+      //Renderiza no display os eventos do jogo
+      doRenderGame(renderer, &playerA, &playerB, &ball, &textVictory);
+    }
+    
+    
+    
     
     //Controla o tempo do interno do jogo
     SDL_Delay(10);
