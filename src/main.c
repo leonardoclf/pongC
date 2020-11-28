@@ -171,7 +171,7 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
   }
 
   // fim de jogo
-  if (playerA->score >= 5 || playerB->score >= 5 )
+  if (playerA->score >= 3 || playerB->score >= 3 )
   {
     stage = -1;
   }
@@ -267,6 +267,12 @@ void doRenderGame(SDL_Renderer *renderer, Player * playerA, Player * playerB, Ba
   
   //Apresenta aquilo feito na tela 
   SDL_RenderPresent(renderer);
+
+  // Prende o resultado na tela 
+  if(stage == -1 ) {
+    SDL_Delay(3000);
+  }
+
 }
 
 int main()
@@ -339,6 +345,7 @@ int main()
   //Loop principal do jogo
   while(stage > 0)
   {
+    
     //Observar os eventos do jogo 
     stage = processEvents(window, &playerA, &playerB, &ball, hitFx);
     
@@ -352,6 +359,7 @@ int main()
       //Renderiza no display os eventos do jogo
       doRenderGame(renderer, &playerA, &playerB, &ball, &textVictory);
     }
+    
 
     //Controla o tempo do interno do jogo
     SDL_Delay(10);
