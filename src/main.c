@@ -33,6 +33,12 @@ typedef struct
   SDL_Color color;
 } Texto;
 
+typedef struct rank
+  {
+    char playerName[100];
+    int v, l; 
+  } rank;
+
 int rankSize(char path[100])
 {
   FILE * rankingTxt = NULL;
@@ -50,6 +56,7 @@ int rankSize(char path[100])
    fclose(rankingTxt);
    return numberRank;
 }
+
 
 
 void showRanking(char path[100])
@@ -455,29 +462,20 @@ int main()
   
   // Ranking Logics
 
+  
+  int numberRank = rankSize("ranking.txt");
+
+
+  struct rank * readRank = malloc(sizeof(rank) * numberRank);
+
+
+  // Load Rank
+  
+
+  
   FILE * rankingTxt = NULL;
-  char ch;
-  int numberRank = 0;
-
   rankingTxt = fopen("ranking.txt", "r");
-  while((ch=fgetc(rankingTxt))!=EOF) 
-  {
-      if(ch=='\n')
-      {
-         numberRank+=1;
-      }
-  }
-  
-  fseek(rankingTxt, 0, SEEK_SET);
 
-  
-  struct rank
-  {
-    char playerName[100];
-    int v, l; 
-  };
-
-  struct rank readRank[numberRank];
   
   int i = 0;
   char rankLine[100];
@@ -564,7 +562,7 @@ int main()
   
 
 
-
+  free(readRank);
 
   return 0;
 }
