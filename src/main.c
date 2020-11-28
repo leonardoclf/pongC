@@ -33,12 +33,9 @@ typedef struct
   SDL_Color color;
 } Texto;
 
-// Var global que cuida do estado do jogo
-int stage = 1;
-
 
 // Função que processa os eventos do jogo 
-int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * ball, Mix_Chunk * hitFx)
+int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * ball, Mix_Chunk * hitFx, int * stage)
 {
 
   SDL_Event event;
@@ -55,7 +52,7 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
         {
           SDL_DestroyWindow(window);
           window = NULL;
-          stage = -1;
+          *stage = -1;
         }
       }
       break;
@@ -64,13 +61,13 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
         switch(event.key.keysym.sym)
         {
           case SDLK_ESCAPE:
-          stage = -1;
+          *stage = -1;
           break;
         }
       }
       break;
       case SDL_QUIT:
-        stage = -1;
+        *stage = -1;
         break;
     }
   }
@@ -78,7 +75,7 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
   const Uint8 *state = SDL_GetKeyboardState(NULL);
   if(state[SDL_SCANCODE_SPACE])
   {
-    stage = 2;
+    *stage = 2;
   }
   if(state[SDL_SCANCODE_W] && playerA->y > 5)
   {
@@ -107,7 +104,7 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
   }
 
   // bloco de lógica que começa partida
-  if (stage == 2)
+  if (*stage == 2)
   {
     ball->x += ball->velx;
     ball->y += ball->vely;
@@ -177,7 +174,7 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
   {
     ball->x = 700;
     ball->y = 700;
-    stage = -1;
+    *stage = -1;
     if(playerA->score > playerB->score)
     {
       playerA->win = 1;
@@ -191,7 +188,7 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
 
   }
 
-  return stage;
+  return *stage;
 }
 
 // Função que renderiza o menu
@@ -232,7 +229,7 @@ void doRenderMenu(SDL_Renderer *renderer, Texto * textoVic)
 }
 
 // Função que rederiza o jogo
-void doRenderGame(SDL_Renderer *renderer, Player * playerA, Player * playerB, Ball * ball, Texto * textoVic)
+void doRenderGame(SDL_Renderer *renderer, Player * playerA, Player * playerB, Ball * ball, Texto * textoVic, int * stage)
 {
   //Escolhe a cor azul para renderizar 
   SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
@@ -284,7 +281,7 @@ void doRenderGame(SDL_Renderer *renderer, Player * playerA, Player * playerB, Ba
   SDL_RenderPresent(renderer);
 
   // Prende o resultado na tela 
-  if(stage == -1 ) {
+  if(*stage == -1 ) {
     SDL_Delay(3000);
   }
 
@@ -293,6 +290,7 @@ void doRenderGame(SDL_Renderer *renderer, Player * playerA, Player * playerB, Ba
 int main()
 {
 
+  int stage = 1;
   char buffer[500];
 
   // Criar o jogadores
@@ -383,7 +381,7 @@ int main()
   {
     
     //Observar os eventos do jogo 
-    stage = processEvents(window, &playerA, &playerB, &ball, hitFx);
+    stage = processEvents(window, &playerA, &playerB, &ball, hitFx, &stage);
     
     if(stage == 1)
     {
@@ -393,7 +391,7 @@ int main()
     else
     {
       //Renderiza no display os eventos do jogo
-      doRenderGame(renderer, &playerA, &playerB, &ball, &textVictory);
+      doRenderGame(renderer, &playerA, &playerB, &ball, &textVictory, &stage);
     }
     
 
