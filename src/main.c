@@ -47,6 +47,7 @@ int rankSize(char path[100])
          numberRank+=1;
       }
    }
+   fclose(rankingTxt);
    return numberRank;
 }
 
