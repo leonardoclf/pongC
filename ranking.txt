@@ -1,2 +1,6 @@
 leo 1 0
 beba 0 1
+leo 1 0
+beba 0 1
+ji 1 0
+dasi 0 1

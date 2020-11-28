@@ -282,7 +282,7 @@ void doRenderGame(SDL_Renderer *renderer, Player * playerA, Player * playerB, Ba
 int main()
 {
 
-  char buffer[100];
+  char buffer[500];
 
   // Criar o jogadores
   Player playerA;
@@ -298,6 +298,7 @@ int main()
   strcpy(playerB.name, buffer);
 
   
+
   SDL_Window *window;                    // Declaração de janela 
   SDL_Renderer *renderer;                // Declaração de renderização
   
@@ -397,26 +398,111 @@ int main()
   SDL_Quit();
 
   // Ranking Logics 
-  FILE * rankingTxt = NULL;
-  rankingTxt = fopen("ranking.txt", "a");
-  if(playerA.score > playerB.score)
-  {
-    fprintf(rankingTxt, "%s %d %d\n", playerA.name, 1, 0);
-  }
-  else
-  {
-    fprintf(rankingTxt, "%s %d %d\n", playerA.name, 0, 1);
-  }
-  if(playerB.score > playerA.score)
-  {
-    fprintf(rankingTxt, "%s %d %d\n", playerB.name, 1, 0);
-  }
-  else
-  {
-    fprintf(rankingTxt, "%s %d %d\n", playerB.name, 0, 1);
-  }
   
+
+  FILE * rankingTxt = NULL;
+  char ch;
+  int numberRank = 0;
+
+  rankingTxt = fopen("ranking.txt", "r");
+  while((ch=fgetc(rankingTxt))!=EOF) 
+  {
+      if(ch=='\n')
+      {
+         numberRank++;
+      }
+   }
+  
+  fseek(rankingTxt, 0, SEEK_SET);
+
+  printf("%d", numberRank);
+
+  // char * nomeBuffer;
+  // char * vBuffer;
+  // char * lBuffer;
+  
+
+
+  struct rank
+  {
+    char playerName[100];
+    int v, l; 
+  };
+
+  struct rank readRank[numberRank];
+  
+  int i = 0;
+  char rankLine[100];
+  char * lineBuffer;
+  while (fgets(rankLine, 100, rankingTxt) != NULL)
+  {
+    lineBuffer = strtok(rankLine, " ");
+    strcpy(readRank[i].playerName, lineBuffer);
+    lineBuffer = strtok(NULL, " ");
+    readRank[i].v = atoi(lineBuffer);
+    lineBuffer = strtok(NULL, " ");
+    readRank[i].l = atoi(lineBuffer);
+    i++;
+  }
+
   fclose(rankingTxt);
+
+  
+  
+  rankingTxt = fopen("ranking.txt", "w");
+  
+  for(i = 0; i < numberRank; i++)
+  {
+    sprintf(buffer, "%s %d %d\n", readRank[i].playerName, readRank[i].v, readRank[i].l);
+    fputs(buffer, rankingTxt);
+  }
+
+  fclose(rankingTxt);
+
+  
+
+
+  
+  
+  
+
+  
+  
+
+  // printf("Ranking Time:\n");
+  // rankingTxt = fopen("ranking.txt", "a");
+
+  // if (rankingTxt == NULL)
+  // {
+  //   printf("Nao foi encontrado base de ranking.txt");
+  // }
+  // else
+  // {
+
+    
+    
+    
+    
+    
+  //   // Parte da lógica de jogador novo na base
+  //   if(playerA.score > playerB.score)
+  //   {
+  //     fprintf(rankingTxt, "%s %d %d\n", playerA.name, 1, 0);
+  //   }
+  //   else
+  //   {
+  //     fprintf(rankingTxt, "%s %d %d\n", playerA.name, 0, 1);
+  //   }
+  //   if(playerB.score > playerA.score)
+  //   {
+  //     fprintf(rankingTxt, "%s %d %d\n", playerB.name, 1, 0);
+  //   }
+  //   else
+  //   {
+  //     fprintf(rankingTxt, "%s %d %d\n", playerB.name, 0, 1);
+  //   }
+  // }
+  // fclose(rankingTxt);
 
   return 0;
 }
