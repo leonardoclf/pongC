@@ -13,9 +13,8 @@
 typedef struct
 {
   // posição dos jogadores
-  int x, y, score;
+  int x, y, score, win;
   char name[100];
-  bool win;
 } Player;
 
 typedef struct
@@ -179,6 +178,15 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
     ball->x = 700;
     ball->y = 700;
     stage = -1;
+    if(playerA->score > playerB->score)
+    {
+      playerA->win = 1;
+    }
+    else
+    {
+      playerB->win = 1;
+    }
+
   }
 
   return stage;
@@ -310,12 +318,13 @@ int main()
   playerA.x = 5;
   playerA.y = 190;
   playerA.score = 0;
-  playerA.win = true;
+  playerA.win = 0;
   
 
   playerB.x = 630;
   playerB.y = 190;
   playerB.score = 0;
+  playerB.win = 0;
 
   Ball ball;
   ball.x = 220;
@@ -400,6 +409,7 @@ int main()
   Mix_CloseAudio();
   SDL_Quit();
 
+  
   // Ranking Logics 
   
 
@@ -452,17 +462,34 @@ int main()
 
   
   
-  
+  // Atualizar o RANK
   
   for(i=0; i < numberRank; i++)
   {
     if(strcmp(readRank[i].playerName, playerA.name) == 0)
     {
-      readRank[i].v++;
+      if(playerA.win)
+      {
+        readRank[i].v++;
+      }
+      else
+      {
+        readRank[i].l++;
+      }
+    }
+    if(strcmp(readRank[i].playerName, playerB.name) == 0)
+    {
+      if(playerB.win)
+      {
+        readRank[i].v++;
+      }
+      else
+      {
+        readRank[i].l++;
+      }
     }
   }
 
-  
   rankingTxt = fopen("ranking.txt", "w");
   
   for(i = 0; i < numberRank ; i++)
