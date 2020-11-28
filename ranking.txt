@@ -1,6 +1,10 @@
-leo 1 0
+leo 10 0
 beba 0 1
-leo 1 0
-beba 0 1
-ji 1 0
-dasi 0 1
+leo 10 0
+teste 1 0
+algo 1 0
+dsi 2 0
+leo 1 1
+f 0 1
+leo 0 1
+jf 0 1

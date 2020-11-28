@@ -15,6 +15,7 @@ typedef struct
   // posição dos jogadores
   int x, y, score;
   char name[100];
+  bool win;
 } Player;
 
 typedef struct
@@ -309,6 +310,8 @@ int main()
   playerA.x = 5;
   playerA.y = 190;
   playerA.score = 0;
+  playerA.win = true;
+  
 
   playerB.x = 630;
   playerB.y = 190;
@@ -409,18 +412,16 @@ int main()
   {
       if(ch=='\n')
       {
-         numberRank++;
+         numberRank+=1;
       }
    }
   
   fseek(rankingTxt, 0, SEEK_SET);
 
-  printf("%d", numberRank);
-
-  // char * nomeBuffer;
-  // char * vBuffer;
-  // char * lBuffer;
   
+  
+  printf("line: %d", numberRank);
+ 
 
 
   struct rank
@@ -445,13 +446,26 @@ int main()
     i++;
   }
 
+  fseek(rankingTxt, 0, SEEK_SET);
+
   fclose(rankingTxt);
 
   
   
+  
+  
+  for(i=0; i < numberRank; i++)
+  {
+    if(strcmp(readRank[i].playerName, playerA.name) == 0)
+    {
+      readRank[i].v++;
+    }
+  }
+
+  
   rankingTxt = fopen("ranking.txt", "w");
   
-  for(i = 0; i < numberRank; i++)
+  for(i = 0; i < numberRank ; i++)
   {
     sprintf(buffer, "%s %d %d\n", readRank[i].playerName, readRank[i].v, readRank[i].l);
     fputs(buffer, rankingTxt);
