@@ -1,6 +1,2 @@
-teste 1 2
-teste 1 2
-teste 1 2
-teste 1 2
-teste 1 2
-teste 1 2
+leo 1 0
+beba 0 1

@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <string.h>
 
 
 // Estruturas que serão usadas no jogo
@@ -13,6 +14,7 @@ typedef struct
 {
   // posição dos jogadores
   int x, y, score;
+  char name[100];
 } Player;
 
 typedef struct
@@ -279,6 +281,23 @@ void doRenderGame(SDL_Renderer *renderer, Player * playerA, Player * playerB, Ba
 
 int main()
 {
+
+  char buffer[100];
+
+  // Criar o jogadores
+  Player playerA;
+  Player playerB;
+  
+  printf("PONG C\n");
+  printf("Digite o nome do Jogador A: ");
+  scanf("%s", buffer);
+  strcpy(playerA.name, buffer);
+  
+  printf("Digite o nome do Jogador B: ");
+  scanf("%s", buffer);
+  strcpy(playerB.name, buffer);
+
+  
   SDL_Window *window;                    // Declaração de janela 
   SDL_Renderer *renderer;                // Declaração de renderização
   
@@ -286,12 +305,10 @@ int main()
   TTF_Init();
   
   // Inicializando as peça do jogo com seus atributos
-  Player playerA;
   playerA.x = 5;
   playerA.y = 190;
   playerA.score = 0;
 
-  Player playerB;
   playerB.x = 630;
   playerB.y = 190;
   playerB.score = 0;
@@ -378,5 +395,28 @@ int main()
   TTF_Quit();
   Mix_CloseAudio();
   SDL_Quit();
+
+  // Ranking Logics 
+  FILE * rankingTxt = NULL;
+  rankingTxt = fopen("ranking.txt", "a");
+  if(playerA.score > playerB.score)
+  {
+    fprintf(rankingTxt, "%s %d %d\n", playerA.name, 1, 0);
+  }
+  else
+  {
+    fprintf(rankingTxt, "%s %d %d\n", playerA.name, 0, 1);
+  }
+  if(playerB.score > playerA.score)
+  {
+    fprintf(rankingTxt, "%s %d %d\n", playerB.name, 1, 0);
+  }
+  else
+  {
+    fprintf(rankingTxt, "%s %d %d\n", playerB.name, 0, 1);
+  }
+  
+  fclose(rankingTxt);
+
   return 0;
 }
