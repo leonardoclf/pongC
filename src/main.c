@@ -173,6 +173,8 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
   // fim de jogo
   if (playerA->score >= 3 || playerB->score >= 3 )
   {
+    ball->x = 700;
+    ball->y = 700;
     stage = -1;
   }
 
