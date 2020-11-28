@@ -33,6 +33,28 @@ typedef struct
   SDL_Color color;
 } Texto;
 
+void showRanking(char path[100])
+{
+  char rankLine[100];
+  FILE * rankingTxt = NULL;
+  rankingTxt = fopen(path, "r");
+  printf("-----------Exibindo RANK-----------\n");
+  char * readName;
+  char * readV;
+  char * readL;
+
+  while (fgets(rankLine, 100, rankingTxt) != NULL)
+  {
+    readName = strtok(rankLine, " ");
+    readV = strtok(NULL, " ");
+    readL = strtok(NULL, " ");
+    printf("Jogador: %s\tVitoria: %s\tDerrota: %s\n", readName, readV, readL);
+  }
+
+  fclose(rankingTxt);
+}
+
+
 
 // Função que processa os eventos do jogo 
 int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * ball, Mix_Chunk * hitFx, int * stage)
@@ -520,22 +542,8 @@ int main()
 
 
   // EXIBIR RANKING
+  showRanking("ranking.txt");
   
-  rankingTxt = fopen("ranking.txt", "r");
-  printf("-----------Exibindo RANK-----------\n");
-  char * readName;
-  char * readV;
-  char * readL;
-
-  while (fgets(rankLine, 100, rankingTxt) != NULL)
-  {
-    readName = strtok(rankLine, " ");
-    readV = strtok(NULL, " ");
-    readL = strtok(NULL, " ");
-    printf("Jogador: %s\tVitoria: %s\tDerrota: %s\n", readName, readV, readL);
-  }
-
-  fclose(rankingTxt);
 
 
 
