@@ -33,6 +33,24 @@ typedef struct
   SDL_Color color;
 } Texto;
 
+int rankSize(char path[100])
+{
+  FILE * rankingTxt = NULL;
+  char ch;
+  int numberRank = 0;
+
+  rankingTxt = fopen(path, "r");
+  while((ch=fgetc(rankingTxt))!=EOF) 
+  {
+      if(ch=='\n')
+      {
+         numberRank+=1;
+      }
+   }
+   return numberRank;
+}
+
+
 void showRanking(char path[100])
 {
   char rankLine[100];
@@ -434,8 +452,7 @@ int main()
   SDL_Quit();
 
   
-  // Ranking Logics 
-  
+  // Ranking Logics
 
   FILE * rankingTxt = NULL;
   char ch;
@@ -448,7 +465,7 @@ int main()
       {
          numberRank+=1;
       }
-   }
+  }
   
   fseek(rankingTxt, 0, SEEK_SET);
 
