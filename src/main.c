@@ -13,7 +13,7 @@
 typedef struct
 {
   // posição dos jogadores
-  int x, y, score, win;
+  int x, y, score, win, lost;
   char name[100];
 } Player;
 
@@ -181,10 +181,12 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
     if(playerA->score > playerB->score)
     {
       playerA->win = 1;
+      playerB->lost = 1;
     }
     else
     {
       playerB->win = 1;
+      playerA->lost = 1;
     }
 
   }
@@ -319,12 +321,14 @@ int main()
   playerA.y = 190;
   playerA.score = 0;
   playerA.win = 0;
+  playerA.lost = 0;
   
 
   playerB.x = 630;
   playerB.y = 190;
   playerB.score = 0;
   playerB.win = 0;
+  playerB.lost = 0;
 
   Ball ball;
   ball.x = 220;
@@ -429,11 +433,6 @@ int main()
   fseek(rankingTxt, 0, SEEK_SET);
 
   
-  
-  printf("line: %d", numberRank);
- 
-
-
   struct rank
   {
     char playerName[100];
@@ -463,11 +462,15 @@ int main()
   
   
   // Atualizar o RANK
+
+  int foundA = 0;
+  int foundB = 0;
   
   for(i=0; i < numberRank; i++)
   {
     if(strcmp(readRank[i].playerName, playerA.name) == 0)
     {
+      foundA = 1;
       if(playerA.win)
       {
         readRank[i].v++;
@@ -479,6 +482,7 @@ int main()
     }
     if(strcmp(readRank[i].playerName, playerB.name) == 0)
     {
+      foundB = 1;
       if(playerB.win)
       {
         readRank[i].v++;
@@ -490,6 +494,10 @@ int main()
     }
   }
 
+
+  // GRAVAR NO TXT 
+  // Jogadores Cadastrados
+
   rankingTxt = fopen("ranking.txt", "w");
   
   for(i = 0; i < numberRank ; i++)
@@ -498,52 +506,22 @@ int main()
     fputs(buffer, rankingTxt);
   }
 
+  // Novos Jogadores
+  if(foundA == 0)
+  {
+    sprintf(buffer, "%s %d %d\n", playerA.name, playerA.win, playerA.lost);
+    fputs(buffer, rankingTxt);
+  }
+  if(foundB == 0)
+  {
+    sprintf(buffer, "%s %d %d\n", playerB.name, playerB.win, playerB.lost);
+    fputs(buffer, rankingTxt);
+  }
+
+
   fclose(rankingTxt);
 
   
-
-
-  
-  
-  
-
-  
-  
-
-  // printf("Ranking Time:\n");
-  // rankingTxt = fopen("ranking.txt", "a");
-
-  // if (rankingTxt == NULL)
-  // {
-  //   printf("Nao foi encontrado base de ranking.txt");
-  // }
-  // else
-  // {
-
-    
-    
-    
-    
-    
-  //   // Parte da lógica de jogador novo na base
-  //   if(playerA.score > playerB.score)
-  //   {
-  //     fprintf(rankingTxt, "%s %d %d\n", playerA.name, 1, 0);
-  //   }
-  //   else
-  //   {
-  //     fprintf(rankingTxt, "%s %d %d\n", playerA.name, 0, 1);
-  //   }
-  //   if(playerB.score > playerA.score)
-  //   {
-  //     fprintf(rankingTxt, "%s %d %d\n", playerB.name, 1, 0);
-  //   }
-  //   else
-  //   {
-  //     fprintf(rankingTxt, "%s %d %d\n", playerB.name, 0, 1);
-  //   }
-  // }
-  // fclose(rankingTxt);
 
   return 0;
 }

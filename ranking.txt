@@ -8,3 +8,7 @@ leo 1 1
 f 0 1
 leo 0 1
 jf 0 3
+victor 0 0
+alff 1 1
+samsung 2 0
+sony 0 2
