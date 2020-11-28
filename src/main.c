@@ -518,10 +518,29 @@ int main()
     fputs(buffer, rankingTxt);
   }
 
+  fclose(rankingTxt);
+
+
+  // EXIBIR RANKING
+  
+  rankingTxt = fopen("ranking.txt", "r");
+  printf("-----------Exibindo RANK-----------\n");
+  char * readName;
+  char * readV;
+  char * readL;
+
+  while (fgets(rankLine, 100, rankingTxt) != NULL)
+  {
+    readName = strtok(rankLine, " ");
+    readV = strtok(NULL, " ");
+    readL = strtok(NULL, " ");
+    printf("Jogador: %s\tVitoria: %s\tDerrota: %s\n", readName, readV, readL);
+  }
 
   fclose(rankingTxt);
 
-  
+
+
 
   return 0;
 }
