@@ -8,8 +8,6 @@
 
 
 // Estruturas que serão usadas no jogo
-
-
 typedef struct
 {
   // posição dos jogadores
@@ -39,6 +37,7 @@ typedef struct
   int v, l; 
 } rank;
 
+// Determina qtd de ranks cadastrados
 int rankSize(char * path)
 {
   FILE * rankingTxt = NULL;
@@ -57,6 +56,7 @@ int rankSize(char * path)
    return numberRank;
 }
 
+// Exibi os ranks 
 void showRanking(char * path)
 {
   char rankLine[100];
@@ -85,6 +85,7 @@ void showRanking(char * path)
   }
 }
 
+// Processa os ranks na memoria
 void processRanking(char * path, rank * rank, Player * playerA, Player * playerB, int numberRank)
 {
   // Load Rank
@@ -141,6 +142,7 @@ void processRanking(char * path, rank * rank, Player * playerA, Player * playerB
   }
 }
 
+// Escreve os ranks num arquivo txt
 void writeRanking(char * path, rank * rank, Player * playerA, Player * playerB, int numberRank)
 {
   FILE * rankingTxt = NULL;
@@ -172,7 +174,7 @@ void writeRanking(char * path, rank * rank, Player * playerA, Player * playerB, 
   } 
 }
 
-// Função que processa os eventos do jogo 
+// Processa os eventos do jogo 
 int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * ball, Mix_Chunk * hitFx, int * stage)
 {
 
@@ -329,7 +331,7 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
   return *stage;
 }
 
-// Função que renderiza o menu
+// Renderiza o menu
 void doRenderMenu(SDL_Renderer *renderer, Texto * textoVic)
 {
   
@@ -366,7 +368,7 @@ void doRenderMenu(SDL_Renderer *renderer, Texto * textoVic)
   SDL_RenderPresent(renderer);
 }
 
-// Função que rederiza o jogo
+// Rederiza o jogo
 void doRenderGame(SDL_Renderer *renderer, Player * playerA, Player * playerB, Ball * ball, Texto * textoVic, int * stage)
 {
   //Escolhe a cor azul para renderizar 
