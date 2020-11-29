@@ -62,20 +62,27 @@ void showRanking(char * path)
   char rankLine[100];
   FILE * rankingTxt = NULL;
   rankingTxt = fopen(path, "r");
-  printf("-----------Exibindo RANK-----------\n");
-  char * readName;
-  char * readV;
-  char * readL;
-
-  while (fgets(rankLine, 100, rankingTxt) != NULL)
+  if (rankingTxt == NULL)
   {
-    readName = strtok(rankLine, " ");
-    readV = strtok(NULL, " ");
-    readL = strtok(NULL, " ");
-    printf("Jogador: %s\tVitoria: %s\tDerrota: %s\n", readName, readV, readL);
+    printf("ERROR %s", path);
   }
+  else
+  {
+    printf("-----------Exibindo RANK-----------\n");
+    char * readName;
+    char * readV;
+    char * readL;
 
-  fclose(rankingTxt);
+    while (fgets(rankLine, 100, rankingTxt) != NULL)
+    {
+      readName = strtok(rankLine, " ");
+      readV = strtok(NULL, " ");
+      readL = strtok(NULL, " ");
+      printf("Jogador: %s\tVitoria: %s\tDerrota: %s\n", readName, readV, readL);
+    }
+
+    fclose(rankingTxt);
+  }
 }
 
 void processRanking(char * path, rank * rank, Player * playerA, Player * playerB, int numberRank)
