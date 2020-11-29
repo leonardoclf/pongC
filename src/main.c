@@ -39,7 +39,7 @@ typedef struct
   int v, l; 
 } rank;
 
-int rankSize(char path[100])
+int rankSize(char * path)
 {
   FILE * rankingTxt = NULL;
   char ch;
@@ -59,7 +59,7 @@ int rankSize(char path[100])
 
 
 
-void showRanking(char path[100])
+void showRanking(char * path)
 {
   char rankLine[100];
   FILE * rankingTxt = NULL;
@@ -490,8 +490,6 @@ int main()
     readRank[i].l = atoi(lineBuffer);
     i++;
   }
-
-  fseek(rankingTxt, 0, SEEK_SET);
 
   fclose(rankingTxt);
 

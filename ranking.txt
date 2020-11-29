@@ -1,10 +1,10 @@
-leo 20 5
+leo 23 5
 teste 3 0
 algo 1 0
 dsi 2 0
 f 0 1
 jf 0 3
-victor 0 15
+victor 0 18
 alff 1 1
 samsung 2 0
 sony 0 2
