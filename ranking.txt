@@ -1,10 +1,10 @@
-leo 32 16
+leo 34 16
 teste 3 0
 algo 1 0
 dsi 2 0
 f 0 1
 jf 0 3
-victor 0 38
+victor 0 40
 alff 1 1
 samsung 2 0
 sony 0 3
