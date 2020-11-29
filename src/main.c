@@ -165,7 +165,7 @@ void writeRanking(char * path, rank * rank, Player * playerA, Player * playerB, 
       sprintf(buffer, "%s %d %d\n", playerA->name, playerA->win, playerA->lost);
       fputs(buffer, rankingTxt);
     }
-    if(playerA->foundPlayer == 0)
+    if(playerB->foundPlayer == 0)
     {
       sprintf(buffer, "%s %d %d\n", playerB->name, playerB->win, playerB->lost);
       fputs(buffer, rankingTxt);
