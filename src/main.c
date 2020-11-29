@@ -78,11 +78,11 @@ void showRanking(char * path)
   fclose(rankingTxt);
 }
 
-void processRanking(rank * rank, Player * playerA, Player * playerB, int numberRank)
+void processRanking(char * path, rank * rank, Player * playerA, Player * playerB, int numberRank)
 {
   // Load Rank
   FILE * rankingTxt = NULL;
-  rankingTxt = fopen("ranking.txt", "r");
+  rankingTxt = fopen(path, "r");
 
   
   int i = 0;
@@ -131,12 +131,12 @@ void processRanking(rank * rank, Player * playerA, Player * playerB, int numberR
   }
 }
 
-void writeRanking(rank * rank, Player * playerA, Player * playerB, int numberRank)
+void writeRanking(char * path, rank * rank, Player * playerA, Player * playerB, int numberRank)
 {
   
   FILE * rankingTxt = NULL;
   char buffer[500];
-  rankingTxt = fopen("ranking.txt", "w");
+  rankingTxt = fopen(path, "w");
   
   for(int i = 0; i < numberRank ; i++)
   {
@@ -545,10 +545,10 @@ int main()
   rank * readRank = malloc(sizeof(rank) * numberRank);
 
   // Carrega o arquivo de ranking na memoria 
-  processRanking(readRank, &playerA, &playerB, numberRank);
+  processRanking("ranking.txt",readRank, &playerA, &playerB, numberRank);
 
   // Grava no txt o ranking atualizado
-  writeRanking(readRank, &playerA, &playerB, numberRank);
+  writeRanking("ranking.txt", readRank, &playerA, &playerB, numberRank);
 
   // EXIBIR RANKING
   showRanking("ranking.txt");
