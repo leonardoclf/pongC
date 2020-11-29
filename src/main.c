@@ -88,51 +88,54 @@ void showRanking(char * path)
 void processRanking(char * path, rank * rank, Player * playerA, Player * playerB, int numberRank)
 {
   // Load Rank
+  int i = 0;
   FILE * rankingTxt = NULL;
   rankingTxt = fopen(path, "r");
-
-  
-  int i = 0;
-  char rankLine[100];
-  char * lineBuffer;
-  while (fgets(rankLine, 100, rankingTxt) != NULL)
+  if (rankingTxt == NULL)
   {
-    lineBuffer = strtok(rankLine, " ");
-    strcpy(rank[i].playerName, lineBuffer);
-    lineBuffer = strtok(NULL, " ");
-    rank[i].v = atoi(lineBuffer);
-    lineBuffer = strtok(NULL, " ");
-    rank[i].l = atoi(lineBuffer);
-    i++;
+    printf("ERROR %s", path);
   }
-
-  fclose(rankingTxt);
-
-  // Atualizar o RANK de nome conhecido
-  for(i=0; i < numberRank; i++)
+  else
   {
-    if(strcmp(rank[i].playerName, playerA->name) == 0)
+    char rankLine[100];
+    char * lineBuffer;
+    while (fgets(rankLine, 100, rankingTxt) != NULL)
     {
-      playerA->foundPlayer = 1;
-      if(playerA->win)
-      {
-        rank[i].v++;
-      }
-      else
-      {
-        rank[i].l++;
-      }
+      lineBuffer = strtok(rankLine, " ");
+      strcpy(rank[i].playerName, lineBuffer);
+      lineBuffer = strtok(NULL, " ");
+      rank[i].v = atoi(lineBuffer);
+      lineBuffer = strtok(NULL, " ");
+      rank[i].l = atoi(lineBuffer);
+      i++;
     }
-    if(strcmp(rank[i].playerName, playerB->name) == 0)
+    fclose(rankingTxt);
+    // Atualizar o RANK de nome conhecido
+    for(i=0; i < numberRank; i++)
     {
-      playerB->foundPlayer = 1;
-      if(playerB->win)
+      if(strcmp(rank[i].playerName, playerA->name) == 0)
       {
-        rank[i].v++;
+        playerA->foundPlayer = 1;
+        if(playerA->win)
+        {
+          rank[i].v++;
+        }
+        else
+        {
+          rank[i].l++;
+        }
       }
-      else
+      if(strcmp(rank[i].playerName, playerB->name) == 0)
       {
-        rank[i].l++;
+        playerB->foundPlayer = 1;
+        if(playerB->win)
+        {
+          rank[i].v++;
+        }
+        else
+        {
+          rank[i].l++;
+        }
       }
     }
   }
