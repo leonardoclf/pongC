@@ -50,6 +50,7 @@ int validName(Player * player)
   return 1;
 }
 
+// Registro do nome dos jogadores
 int validRegister(Player * playerA, Player * playerB)
 {
   char buffer[500];
@@ -393,23 +394,35 @@ void doRenderMenu(SDL_Renderer *renderer, Texto * textoVic)
   SDL_Texture * msgTextA = SDL_CreateTextureFromSurface(renderer, msgA);
   SDL_QueryTexture(msgTextA, NULL, NULL, &textoVic->texW, &textoVic->texH);
 
-  SDL_Surface * msgB = TTF_RenderText_Solid(textoVic->font, "ESPACO - Para comecar", textoVic->color);
+  SDL_Surface * msgB = TTF_RenderText_Solid(textoVic->font, "Controle A: W / S", textoVic->color);
   SDL_Texture * msgTextB = SDL_CreateTextureFromSurface(renderer, msgB);
   SDL_QueryTexture(msgTextB, NULL, NULL, &textoVic->texW, &textoVic->texH);
 
-  SDL_Surface * msgC = TTF_RenderText_Solid(textoVic->font, "ESC - Para finalizar jogo", textoVic->color);
+  SDL_Surface * msgC = TTF_RenderText_Solid(textoVic->font, "Controle B: Seta Cima / Seta Baixo", textoVic->color);
   SDL_Texture * msgTextC = SDL_CreateTextureFromSurface(renderer, msgC);
   SDL_QueryTexture(msgTextC, NULL, NULL, &textoVic->texW, &textoVic->texH);
+  
+  SDL_Surface * msgD = TTF_RenderText_Solid(textoVic->font, "ESPACO - Para comecar", textoVic->color);
+  SDL_Texture * msgTextD = SDL_CreateTextureFromSurface(renderer, msgD);
+  SDL_QueryTexture(msgTextD, NULL, NULL, &textoVic->texW, &textoVic->texH);
+
+  SDL_Surface * msgE = TTF_RenderText_Solid(textoVic->font, "ESC - Para finalizar jogo", textoVic->color);
+  SDL_Texture * msgTextE = SDL_CreateTextureFromSurface(renderer, msgE);
+  SDL_QueryTexture(msgTextE, NULL, NULL, &textoVic->texW, &textoVic->texH);
 
   
   SDL_Rect bemvindo = { 90, 40, textoVic->texW, textoVic->texH };
-  SDL_Rect instrucaoA = { 90, 160, textoVic->texW, textoVic->texH };
-  SDL_Rect instrucaoB = { 90, 200, textoVic->texW, textoVic->texH };
+  SDL_Rect instrucaoA = { 90, 180, textoVic->texW, textoVic->texH };
+  SDL_Rect instrucaoB = { 90, 240, textoVic->texW, textoVic->texH };
+  SDL_Rect instrucaoC = { 90, 380, textoVic->texW, textoVic->texH };
+  SDL_Rect instrucaoD = { 90, 420, textoVic->texW, textoVic->texH };
   
 
   SDL_RenderCopy(renderer, msgTextA, NULL, &bemvindo);
   SDL_RenderCopy(renderer, msgTextB, NULL, &instrucaoA);
   SDL_RenderCopy(renderer, msgTextC, NULL, &instrucaoB);
+  SDL_RenderCopy(renderer, msgTextD, NULL, &instrucaoC);
+  SDL_RenderCopy(renderer, msgTextE, NULL, &instrucaoD);
   SDL_RenderPresent(renderer);
 }
 
@@ -613,8 +626,7 @@ int main()
   // EXIBIR RANKING
   showRanking("ranking.txt");
   
-
-
+  // Libera memoria dinamica
   free(readRank);
 
   return 0;
