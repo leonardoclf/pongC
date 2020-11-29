@@ -13,7 +13,7 @@
 typedef struct
 {
   // posição dos jogadores
-  int x, y, score, win, lost;
+  int x, y, score, win, lost, foundPlayer;
   char name[100];
 } Player;
 
@@ -101,17 +101,12 @@ void processRanking(rank * rank, Player * playerA, Player * playerB, int numberR
 
   fclose(rankingTxt);
 
-  
-  // Atualizar o RANK
-
-  int foundA = 0;
-  int foundB = 0;
-  
+  // Atualizar o RANK de nome conhecido
   for(i=0; i < numberRank; i++)
   {
     if(strcmp(rank[i].playerName, playerA->name) == 0)
     {
-      foundA = 1;
+      playerA->foundPlayer = 1;
       if(playerA->win)
       {
         rank[i].v++;
@@ -123,7 +118,7 @@ void processRanking(rank * rank, Player * playerA, Player * playerB, int numberR
     }
     if(strcmp(rank[i].playerName, playerB->name) == 0)
     {
-      foundB = 1;
+      playerB->foundPlayer = 1;
       if(playerB->win)
       {
         rank[i].v++;
@@ -134,6 +129,33 @@ void processRanking(rank * rank, Player * playerA, Player * playerB, int numberR
       }
     }
   }
+}
+
+void writeRanking(rank * rank, Player * playerA, Player * playerB, int numberRank)
+{
+  
+  FILE * rankingTxt = NULL;
+  char buffer[500];
+  rankingTxt = fopen("ranking.txt", "w");
+  
+  for(int i = 0; i < numberRank ; i++)
+  {
+    sprintf(buffer, "%s %d %d\n", rank[i].playerName, rank[i].v, rank[i].l);
+    fputs(buffer, rankingTxt);
+  }
+
+  // Novos Jogadores
+  if(playerA->foundPlayer == 0)
+  {
+    sprintf(buffer, "%s %d %d\n", playerA->name, playerA->win, playerA->lost);
+    fputs(buffer, rankingTxt);
+  }
+  if(playerA->foundPlayer == 0)
+  {
+    sprintf(buffer, "%s %d %d\n", playerB->name, playerB->win, playerB->lost);
+    fputs(buffer, rankingTxt);
+  }
+  fclose(rankingTxt);
 }
 
 // Função que processa os eventos do jogo 
@@ -525,34 +547,8 @@ int main()
   // Carrega o arquivo de ranking na memoria 
   processRanking(readRank, &playerA, &playerB, numberRank);
 
-  
-
-
-  // GRAVAR NO TXT 
-  // Jogadores Cadastrados
-
-  // rankingTxt = fopen("ranking.txt", "w");
-  
-  // for(i = 0; i < numberRank ; i++)
-  // {
-  //   sprintf(buffer, "%s %d %d\n", readRank[i].playerName, readRank[i].v, readRank[i].l);
-  //   fputs(buffer, rankingTxt);
-  // }
-
-  // // Novos Jogadores
-  // if(foundA == 0)
-  // {
-  //   sprintf(buffer, "%s %d %d\n", playerA.name, playerA.win, playerA.lost);
-  //   fputs(buffer, rankingTxt);
-  // }
-  // if(foundB == 0)
-  // {
-  //   sprintf(buffer, "%s %d %d\n", playerB.name, playerB.win, playerB.lost);
-  //   fputs(buffer, rankingTxt);
-  // }
-
-  // fclose(rankingTxt);
-
+  // Grava no txt o ranking atualizado
+  writeRanking(readRank, &playerA, &playerB, numberRank);
 
   // EXIBIR RANKING
   showRanking("ranking.txt");
