@@ -37,6 +37,51 @@ typedef struct
   int v, l; 
 } rank;
 
+// Determina nome valido
+int validName(Player * player)
+{
+  for(int i = 0; i < strlen(player->name); i++)
+  {
+    if(player->name[i] == ' ')
+    {
+      return 0;
+    }
+  }
+  return 1;
+}
+
+int validRegister(Player * playerA, Player * playerB)
+{
+  char buffer[500];
+  while(1)
+  {
+    printf("Digite o nome do Jogador A: ");
+    gets(buffer);
+    strcpy(playerA->name, buffer);
+    
+    printf("Digite o nome do Jogador B: ");
+    gets(buffer);
+    strcpy(playerB->name, buffer);
+    
+    if (validName(playerA) + validName(playerB) == 2)
+    {
+      if(strcmp(playerA->name, playerB->name) != 0)
+      {
+        return 0;
+      }
+      else
+      {
+        printf("Nomes dos jogadores precisam ser diferentes\n");
+      }
+    }
+    else
+    {
+      printf("Nome digitado invalido. Digite sem espaco\n");
+    }
+  }
+  return 1;
+}
+
 // Determina qtd de ranks cadastrados
 int rankSize(char * path)
 {
@@ -429,25 +474,22 @@ void doRenderGame(SDL_Renderer *renderer, Player * playerA, Player * playerB, Ba
 
 int main()
 {
-
+  int validNames = 1;
   int stage = 1;
-  char buffer[500];
+  // char buffer[500];
 
   // Criar o jogadores
   Player playerA;
   Player playerB;
   
   printf("PONG C\n");
-  printf("Digite o nome do Jogador A: ");
-  scanf("%s", buffer);
-  strcpy(playerA.name, buffer);
-  
-  printf("Digite o nome do Jogador B: ");
-  scanf("%s", buffer);
-  strcpy(playerB.name, buffer);
+  printf("Insira nome sem espaco\n");
 
+  while (validNames)
+  {
+    validNames = validRegister(&playerA, &playerB);
+  }
   
-
   SDL_Window *window;                    // Declaração de janela 
   SDL_Renderer *renderer;                // Declaração de renderização
   
@@ -460,6 +502,7 @@ int main()
   playerA.score = 0;
   playerA.win = 0;
   playerA.lost = 0;
+  playerA.foundPlayer = 0;
   
 
   playerB.x = 630;
@@ -467,6 +510,7 @@ int main()
   playerB.score = 0;
   playerB.win = 0;
   playerB.lost = 0;
+  playerB.foundPlayer = 0;
 
   Ball ball;
   ball.x = 220;
