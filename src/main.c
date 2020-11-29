@@ -33,11 +33,11 @@ typedef struct
   SDL_Color color;
 } Texto;
 
-typedef struct rank
-  {
-    char playerName[100];
-    int v, l; 
-  } rank;
+typedef struct 
+{
+  char playerName[100];
+  int v, l; 
+} rank;
 
 int rankSize(char path[100])
 {
@@ -466,7 +466,7 @@ int main()
   int numberRank = rankSize("ranking.txt");
 
 
-  struct rank * readRank = malloc(sizeof(rank) * numberRank);
+  rank * readRank = malloc(sizeof(rank) * numberRank);
 
 
   // Load Rank
