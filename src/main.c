@@ -143,29 +143,33 @@ void processRanking(char * path, rank * rank, Player * playerA, Player * playerB
 
 void writeRanking(char * path, rank * rank, Player * playerA, Player * playerB, int numberRank)
 {
-  
   FILE * rankingTxt = NULL;
   char buffer[500];
   rankingTxt = fopen(path, "w");
-  
-  for(int i = 0; i < numberRank ; i++)
+  if (rankingTxt == NULL)
   {
-    sprintf(buffer, "%s %d %d\n", rank[i].playerName, rank[i].v, rank[i].l);
-    fputs(buffer, rankingTxt);
+    printf("ERROR %s", path);
   }
-
-  // Novos Jogadores
-  if(playerA->foundPlayer == 0)
-  {
-    sprintf(buffer, "%s %d %d\n", playerA->name, playerA->win, playerA->lost);
-    fputs(buffer, rankingTxt);
-  }
-  if(playerA->foundPlayer == 0)
-  {
-    sprintf(buffer, "%s %d %d\n", playerB->name, playerB->win, playerB->lost);
-    fputs(buffer, rankingTxt);
-  }
-  fclose(rankingTxt);
+  else
+  {  
+    for(int i = 0; i < numberRank ; i++)
+    {
+      sprintf(buffer, "%s %d %d\n", rank[i].playerName, rank[i].v, rank[i].l);
+      fputs(buffer, rankingTxt);
+    }
+    // Novos Jogadores
+    if(playerA->foundPlayer == 0)
+    {
+      sprintf(buffer, "%s %d %d\n", playerA->name, playerA->win, playerA->lost);
+      fputs(buffer, rankingTxt);
+    }
+    if(playerA->foundPlayer == 0)
+    {
+      sprintf(buffer, "%s %d %d\n", playerB->name, playerB->win, playerB->lost);
+      fputs(buffer, rankingTxt);
+    }
+    fclose(rankingTxt);
+  } 
 }
 
 // Função que processa os eventos do jogo 
