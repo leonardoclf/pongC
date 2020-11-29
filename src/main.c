@@ -57,8 +57,6 @@ int rankSize(char * path)
    return numberRank;
 }
 
-
-
 void showRanking(char * path)
 {
   char rankLine[100];
@@ -80,7 +78,63 @@ void showRanking(char * path)
   fclose(rankingTxt);
 }
 
+void processRanking(rank * rank, Player * playerA, Player * playerB, int numberRank)
+{
+  // Load Rank
+  FILE * rankingTxt = NULL;
+  rankingTxt = fopen("ranking.txt", "r");
 
+  
+  int i = 0;
+  char rankLine[100];
+  char * lineBuffer;
+  while (fgets(rankLine, 100, rankingTxt) != NULL)
+  {
+    lineBuffer = strtok(rankLine, " ");
+    strcpy(rank[i].playerName, lineBuffer);
+    lineBuffer = strtok(NULL, " ");
+    rank[i].v = atoi(lineBuffer);
+    lineBuffer = strtok(NULL, " ");
+    rank[i].l = atoi(lineBuffer);
+    i++;
+  }
+
+  fclose(rankingTxt);
+
+  
+  // Atualizar o RANK
+
+  int foundA = 0;
+  int foundB = 0;
+  
+  for(i=0; i < numberRank; i++)
+  {
+    if(strcmp(rank[i].playerName, playerA->name) == 0)
+    {
+      foundA = 1;
+      if(playerA->win)
+      {
+        rank[i].v++;
+      }
+      else
+      {
+        rank[i].l++;
+      }
+    }
+    if(strcmp(rank[i].playerName, playerB->name) == 0)
+    {
+      foundB = 1;
+      if(playerB->win)
+      {
+        rank[i].v++;
+      }
+      else
+      {
+        rank[i].l++;
+      }
+    }
+  }
+}
 
 // Função que processa os eventos do jogo 
 int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * ball, Mix_Chunk * hitFx, int * stage)
@@ -462,97 +516,42 @@ int main()
   
   // Ranking Logics
 
-  
+  // Função para conhecer o numero de ranking cadastrado
   int numberRank = rankSize("ranking.txt");
 
-
+  // Criação dinamica do estrutura dos ranks
   rank * readRank = malloc(sizeof(rank) * numberRank);
 
-
-  // Load Rank
-  
-
-  
-  FILE * rankingTxt = NULL;
-  rankingTxt = fopen("ranking.txt", "r");
+  // Carrega o arquivo de ranking na memoria 
+  processRanking(readRank, &playerA, &playerB, numberRank);
 
   
-  int i = 0;
-  char rankLine[100];
-  char * lineBuffer;
-  while (fgets(rankLine, 100, rankingTxt) != NULL)
-  {
-    lineBuffer = strtok(rankLine, " ");
-    strcpy(readRank[i].playerName, lineBuffer);
-    lineBuffer = strtok(NULL, " ");
-    readRank[i].v = atoi(lineBuffer);
-    lineBuffer = strtok(NULL, " ");
-    readRank[i].l = atoi(lineBuffer);
-    i++;
-  }
-
-  fclose(rankingTxt);
-
-  
-  
-  // Atualizar o RANK
-
-  int foundA = 0;
-  int foundB = 0;
-  
-  for(i=0; i < numberRank; i++)
-  {
-    if(strcmp(readRank[i].playerName, playerA.name) == 0)
-    {
-      foundA = 1;
-      if(playerA.win)
-      {
-        readRank[i].v++;
-      }
-      else
-      {
-        readRank[i].l++;
-      }
-    }
-    if(strcmp(readRank[i].playerName, playerB.name) == 0)
-    {
-      foundB = 1;
-      if(playerB.win)
-      {
-        readRank[i].v++;
-      }
-      else
-      {
-        readRank[i].l++;
-      }
-    }
-  }
 
 
   // GRAVAR NO TXT 
   // Jogadores Cadastrados
 
-  rankingTxt = fopen("ranking.txt", "w");
+  // rankingTxt = fopen("ranking.txt", "w");
   
-  for(i = 0; i < numberRank ; i++)
-  {
-    sprintf(buffer, "%s %d %d\n", readRank[i].playerName, readRank[i].v, readRank[i].l);
-    fputs(buffer, rankingTxt);
-  }
+  // for(i = 0; i < numberRank ; i++)
+  // {
+  //   sprintf(buffer, "%s %d %d\n", readRank[i].playerName, readRank[i].v, readRank[i].l);
+  //   fputs(buffer, rankingTxt);
+  // }
 
-  // Novos Jogadores
-  if(foundA == 0)
-  {
-    sprintf(buffer, "%s %d %d\n", playerA.name, playerA.win, playerA.lost);
-    fputs(buffer, rankingTxt);
-  }
-  if(foundB == 0)
-  {
-    sprintf(buffer, "%s %d %d\n", playerB.name, playerB.win, playerB.lost);
-    fputs(buffer, rankingTxt);
-  }
+  // // Novos Jogadores
+  // if(foundA == 0)
+  // {
+  //   sprintf(buffer, "%s %d %d\n", playerA.name, playerA.win, playerA.lost);
+  //   fputs(buffer, rankingTxt);
+  // }
+  // if(foundB == 0)
+  // {
+  //   sprintf(buffer, "%s %d %d\n", playerB.name, playerB.win, playerB.lost);
+  //   fputs(buffer, rankingTxt);
+  // }
 
-  fclose(rankingTxt);
+  // fclose(rankingTxt);
 
 
   // EXIBIR RANKING
