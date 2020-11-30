@@ -1,13 +1,33 @@
-# PongC
+# PongC 🎮
+Equipe:
+Leonardo Cunha Luna Freire, 23148764
+Lukas de Sousa Figueirêdo, 23724501
+Bruno Rodrigues dos Santos, 23046317
+
+[![Languages](https://img.shields.io/github/languages/count/lukassousaf/login-page?color=%231E90FF&style=flat-square)](#)
+
+<br />
+<p align="center">
+   <img src="game.png" width="5000"/>
+</p>
+
+
+---
+
+# :pushpin: Sumário
+
+* [Sobre](#rocket-features)
+* [Iniciando](#runner-getting-started)
+
+
+# :closed_book: Sobre
+
 - Projeto de conclusão da disciplina de Técnicas de Desenvolvimento de Algoritmos; 
 - Ministrada pelo Prof. Leandro Figueiredo Alves;
 
 - Objetivo do projeto: criar um clone do jogo Pong, usando a linguagem C com a biblioteca SDL2. 
 
-- Equipe:
 
-- Leonardo Cunha Luna Freire, 23148764
+# :rocket: Iniciando
 
-- Lukas de Sousa Figueirêdo, 23724501
-
-- Bruno Rodrigues dos Santos, 23046317
+Abra o terminal e execute *``./pongc``*.
