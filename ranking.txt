@@ -1,10 +1,5 @@
-leo 41 16
-teste 4 6
-algo 1 0
-lukas 1 0
-matheus 0 1
-terminei 0 1
-fim 1 0
-novousr 1 0
-oldusr 0 1
-yoldusr 0 2
+leo 3 3
+teste 0 5
+outroteste 0 1
+jogadorA 0 1
+jogadorB 1 0

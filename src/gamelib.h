@@ -7,13 +7,14 @@
 #include <string.h>
 
 // Estruturas que serão usadas no jogo
+// Jogador
 typedef struct
 {
   // posição dos jogadores
   int x, y, score, win, lost, foundPlayer;
   char name[100];
 } Player;
-
+// Bola
 typedef struct
 {
   // posição da bola 
@@ -21,7 +22,7 @@ typedef struct
   // atributo de velocidade horizontal e vertical
   int velx, vely;
 } Ball;
-
+// Texto
 typedef struct
 {
   int texW;
@@ -29,7 +30,7 @@ typedef struct
   TTF_Font * font;
   SDL_Color color;
 } Texto;
-
+// Rank
 typedef struct 
 {
   char playerName[100];

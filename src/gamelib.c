@@ -252,14 +252,6 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
   {
     playerB->y += 5;
   }
-  // Reset da Bola 
-  if(state[SDL_SCANCODE_R])
-  {
-    ball->x = 220;
-    ball->y = 120;
-    ball->velx = 2;
-    ball->vely = 0;
-  }
 
   // bloco de lógica que começa partida
   if (*stage == 2)
@@ -271,7 +263,7 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
   
 
   //colisão c/ a parede
-  if (ball->y >= 480 || ball->y <= 0)
+  if (ball->y >= 470 || ball->y <= 0)
   {
     Mix_PlayChannel(-1, hitFx, 0);
     ball->vely *= -1; 
@@ -312,10 +304,6 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
     else 
     {
       Mix_PlayChannel(-1, hitFx, 0);
-      printf("Bx: %d\n", playerB->x);
-      printf("By: %d\n", playerB->y);
-      printf("Ballx: %d\n", ball->x);
-      printf("Bally: %d\n", ball->y);
       playerCenter = playerA->y + 35;
       diag = playerCenter - ball->y;
       ball->vely += diag * - 0.1;
