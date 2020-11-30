@@ -4,11 +4,11 @@ Leonardo Cunha Luna Freire, 23148764
 Lukas de Sousa Figueirêdo, 23724501
 Bruno Rodrigues dos Santos, 23046317
 
-[![Languages](https://img.shields.io/github/languages/count/lukassousaf/login-page?color=%231E90FF&style=flat-square)](#)
+[![Languages](https://img.shields.io/github/languages/count/leonardoclf/login-page?color=%231E90FF&style=flat-square)](#)
 
 <br />
 <p align="center">
-   <img src="game.png" width="5000"/>
+   <img src="game.png" width="4000"/>
 </p>
 
 
