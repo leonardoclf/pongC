@@ -1,14 +1,14 @@
 # PongC 🎮
-Equipe:
-Leonardo Cunha Luna Freire, 23148764
-Lukas de Sousa Figueirêdo, 23724501
+Equipe:<br>
+Leonardo Cunha Luna Freire, 23148764<br>
+Lukas de Sousa Figueirêdo, 23724501<br>
 Bruno Rodrigues dos Santos, 23046317
 
 [![Languages](https://img.shields.io/github/languages/count/leonardoclf/pongC?color=%231E90FF&style=flat-square)](#)
 
 <br />
 <p align="center">
-   <img src="game.png" width="500"/>
+   <img src="game.png" width="700"/>
 </p>
 
 
