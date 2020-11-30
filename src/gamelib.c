@@ -40,7 +40,7 @@ int validRegister(Player * playerA, Player * playerB)
     {
       if(strcmp(playerA->name, playerB->name) != 0)
       {
-        return 0;
+        return false;
       }
       else
       {
@@ -52,7 +52,7 @@ int validRegister(Player * playerA, Player * playerB)
       printf("Nome digitado invalido. Digite sem espaco\n");
     }
   }
-  return 1;
+  return true;
 }
 
 // Determina qtd de ranks cadastrados
@@ -86,7 +86,7 @@ void showRanking(char * path)
   }
   else
   {
-    printf("-----------Exibindo RANK-----------\n");
+    printf("\n-----------Exibindo RANK-----------\n");
     char * readName;
     char * readV;
     char * readL;

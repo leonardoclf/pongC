@@ -2,7 +2,7 @@
 
 int main()
 {
-  int validNames = 1;
+  bool validNames = true;
   int stage = 1;
   
 

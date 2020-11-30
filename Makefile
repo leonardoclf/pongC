@@ -8,7 +8,7 @@ CXXFLAGS = -std=c11 -Wall -g
 LDFLAGS = -lSDL2 -lGL -lGLEW -lSDL2_ttf -lSDL2_mixer
 
 # Makefile settings - Can be customized.
-APPNAME = myapp
+APPNAME = pongc
 EXT = .c
 SRCDIR = src
 OBJDIR = obj
