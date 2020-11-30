@@ -96,7 +96,7 @@ void showRanking(char * path)
       readName = strtok(rankLine, " ");
       readV = strtok(NULL, " ");
       readL = strtok(NULL, " ");
-      printf("Jogador: %s\tVitoria: %s\tDerrota: %s\n", readName, readV, readL);
+      printf("Jogador: %s\t\tVitoria: %s\t\tDerrota: %s\n", readName, readV, readL);
     }
 
     fclose(rankingTxt);
@@ -304,10 +304,6 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
     if (ball->x > 320) 
     {
       Mix_PlayChannel(-1, hitFx, 0);
-      printf("Ax: %d\n", playerA->x);
-      printf("Ay: %d\n", playerA->y);
-      printf("Ballx: %d\n", ball->x);
-      printf("Bally: %d\n", ball->y);
       playerCenter = playerB->y + 35;
       diag = playerCenter - ball->y;
       ball->vely += diag * - 0.1;
@@ -328,7 +324,7 @@ int processEvents(SDL_Window *window, Player *playerA, Player *playerB, Ball * b
   }
 
   // fim de jogo
-  if (playerA->score >= 3 || playerB->score >= 3 )
+  if (playerA->score >= 5 || playerB->score >= 5 )
   {
     ball->x = 700;
     ball->y = 700;
@@ -415,8 +411,7 @@ void doRenderGame(SDL_Renderer *renderer, Player * playerA, Player * playerB, Ba
   char scorePlayerBStr[10];
   sprintf(scorePlayerAStr, "%i", playerA->score);
   sprintf(scorePlayerBStr, "%i", playerB->score);
-  // sprintf(scorePlayerAStr, "%i", ball->x);
-  // sprintf(scorePlayerBStr, "%i", ball->y);
+  
 
   
   // Processamento do Placar - texto

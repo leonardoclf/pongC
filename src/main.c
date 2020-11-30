@@ -4,7 +4,7 @@ int main()
 {
   int validNames = 1;
   int stage = 1;
-  // char buffer[500];
+  
 
   // Criar o jogadores
   Player playerA;
