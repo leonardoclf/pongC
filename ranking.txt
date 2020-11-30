@@ -1,5 +1,5 @@
-leo 3 3
-teste 0 5
-outroteste 0 1
-jogadorA 0 1
-jogadorB 1 0
+jogadorA 4 1
+jogadorB 1 3
+jogadorC 0 1
+jogadorD 1 0
+jogadorE 0 1
