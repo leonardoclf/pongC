@@ -16,8 +16,9 @@ Bruno Rodrigues dos Santos, 23046317
 
 # :pushpin: Sumário
 
-* [Sobre](#rocket-features)
-* [Iniciando](#runner-getting-started)
+* [Sobre]
+* [Iniciando]
+* [Relatório]
 
 
 # :closed_book: Sobre
@@ -25,7 +26,13 @@ Bruno Rodrigues dos Santos, 23046317
 - Projeto de conclusão da disciplina de Técnicas de Desenvolvimento de Algoritmos; 
 - Ministrada pelo Prof. Leandro Figueiredo Alves;
 
-- Objetivo do projeto: criar um clone do jogo Pong, usando a linguagem C com a biblioteca SDL2. 
+- Objetivo do projeto: criar um clone do jogo Pong, usando a linguagem C com a biblioteca SDL2.
+
+
+# 📋 Relatório
+
+
+   - Relatório do projeto: <a href="https://github.com/leonardoclf/pongC/blob/master/relatorio.pdf">Link</a>
 
 
 # :rocket: Iniciando
