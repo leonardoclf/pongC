@@ -4,7 +4,7 @@ Leonardo Cunha Luna Freire, 23148764
 Lukas de Sousa Figueirêdo, 23724501
 Bruno Rodrigues dos Santos, 23046317
 
-[![Languages](https://img.shields.io/github/languages/count/leonardoclf/login-page?color=%231E90FF&style=flat-square)](#)
+[![Languages](https://img.shields.io/github/languages/count/leonardoclf/pongC?color=%231E90FF&style=flat-square)](#)
 
 <br />
 <p align="center">
