@@ -8,7 +8,7 @@ Bruno Rodrigues dos Santos, 23046317
 
 <br />
 <p align="center">
-   <img src="game.png" width="1000"/>
+   <img src="game.png" width="500"/>
 </p>
 
 
