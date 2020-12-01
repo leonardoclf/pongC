@@ -29,10 +29,11 @@ Bruno Rodrigues dos Santos, 23046317
 - Objetivo do projeto: criar um clone do jogo Pong, usando a linguagem C com a biblioteca SDL2.
 
 
-# 📋 Relatório<a name="relatorio"></a>
+# 📋 Relatório & Vídeo<a name="relatorio"></a>
 
 
    - Relatório do projeto: <a href="https://github.com/leonardoclf/pongC/blob/master/relatorio.pdf">Link</a>
+   - Video demonstrativo: <a href="https://www.youtube.com/watch?v=uujLMgfJWoc">Link</a>
 
 
 # :rocket: Iniciando<a name="iniciando"></a>
